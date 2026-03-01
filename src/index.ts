@@ -52,6 +52,12 @@ import {
   isRefineRequest,
 } from './tork-drafter.js';
 import {
+  handleLeadAdjust,
+  handleLeadReply,
+  isLeadAdjustRequest,
+  isLeadReplyRequest,
+} from './tork-leads.js';
+import {
   isHealthCheckRequest,
   runHealthCheck,
   startHealthCheckTimer,
@@ -414,7 +420,9 @@ async function startMessageLoop(): Promise<void> {
               isRefineRequest(m.content) ||
               isDigestRequest(m.content) ||
               isCompetitorWatchRequest(m.content) ||
-              isSocialListenerRequest(m.content),
+              isSocialListenerRequest(m.content) ||
+              isLeadReplyRequest(m.content) ||
+              isLeadAdjustRequest(m.content),
           );
           if (hostCmd) {
             const handleCmd = async () => {
@@ -429,6 +437,10 @@ async function startMessageLoop(): Promise<void> {
                 result = await getCompetitorStatus();
               } else if (isSocialListenerRequest(hostCmd.content)) {
                 result = await getSocialStatus();
+              } else if (isLeadReplyRequest(hostCmd.content)) {
+                result = await handleLeadReply(hostCmd.content, chatJid);
+              } else if (isLeadAdjustRequest(hostCmd.content)) {
+                result = await handleLeadAdjust(hostCmd.content, chatJid);
               } else {
                 result = await handleRefineRequest(hostCmd.content, chatJid);
               }
