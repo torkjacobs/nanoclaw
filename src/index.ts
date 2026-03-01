@@ -40,6 +40,12 @@ import { startIpcWatcher } from './ipc.js';
 import { findChannel, formatMessages, formatOutbound } from './router.js';
 import { startSchedulerLoop } from './task-scheduler.js';
 import {
+  getCompetitorStatus,
+  isCompetitorWatchRequest,
+  startCompetitorWatchTimer,
+} from './tork-competitors.js';
+import { isDigestRequest, runDigest, startDigestTimer } from './tork-digest.js';
+import {
   handleDraftRequest,
   handleRefineRequest,
   isDraftRequest,
@@ -400,7 +406,9 @@ async function startMessageLoop(): Promise<void> {
             (m) =>
               isHealthCheckRequest(m.content) ||
               isDraftRequest(m.content) ||
-              isRefineRequest(m.content),
+              isRefineRequest(m.content) ||
+              isDigestRequest(m.content) ||
+              isCompetitorWatchRequest(m.content),
           );
           if (hostCmd) {
             const handleCmd = async () => {
@@ -409,6 +417,10 @@ async function startMessageLoop(): Promise<void> {
                 result = await runHealthCheck();
               } else if (isDraftRequest(hostCmd.content)) {
                 result = await handleDraftRequest(hostCmd.content, chatJid);
+              } else if (isDigestRequest(hostCmd.content)) {
+                result = await runDigest();
+              } else if (isCompetitorWatchRequest(hostCmd.content)) {
+                result = await getCompetitorStatus();
               } else {
                 result = await handleRefineRequest(hostCmd.content, chatJid);
               }
@@ -566,6 +578,20 @@ async function main(): Promise<void> {
       if (ch) await ch.sendMessage(mainGroupJid, text);
     });
     logger.info('Tork health check monitor started (6h interval)');
+
+    // Start Tork daily digest timer (8 AM AEST)
+    startDigestTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Tork daily digest timer started (8 AM AEST)');
+
+    // Start Tork competitor watch timer (12-hour interval)
+    startCompetitorWatchTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Tork competitor watch started (12h interval)');
   }
 
   queue.setProcessMessagesFn(processGroupMessages);

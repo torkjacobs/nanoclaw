@@ -83,8 +83,14 @@ async function checkEndpoint(
   }
 }
 
+export { EndpointResult };
+
+export async function checkEndpoints(): Promise<EndpointResult[]> {
+  return Promise.all(ENDPOINTS.map(checkEndpoint));
+}
+
 export async function runHealthCheck(): Promise<string> {
-  const results = await Promise.all(ENDPOINTS.map(checkEndpoint));
+  const results = await checkEndpoints();
 
   const allOk = results.every((r) => r.ok);
   const failed = results.filter((r) => !r.ok);
