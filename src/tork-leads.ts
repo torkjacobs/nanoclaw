@@ -144,10 +144,7 @@ export async function handleLeadAdjust(
     return "No previous lead response to adjust. Use '@tork reply [message]' first.";
   }
 
-  logger.info(
-    { feedback: feedback.slice(0, 80) },
-    'Adjusting lead response',
-  );
+  logger.info({ feedback: feedback.slice(0, 80) }, 'Adjusting lead response');
 
   try {
     const messages: Array<{ role: 'user' | 'assistant'; content: string }> = [
