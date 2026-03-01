@@ -88,9 +88,9 @@ async function syncGroups(projectRoot: string): Promise<void> {
   // Run inline sync script via node
   logger.info('Fetching group metadata');
   let syncOk = false;
-  try {
+  {
     const syncScript = `
-import makeWASocket, { useMultiFileAuthState, makeCacheableSignalKeyStore, Browsers } from '@whiskeysockets/baileys';
+import makeWASocket, { useMultiFileAuthState, makeCacheableSignalKeyStore, Browsers, fetchLatestWaWebVersion } from '@whiskeysockets/baileys';
 import pino from 'pino';
 import path from 'path';
 import fs from 'fs';
@@ -115,7 +115,10 @@ const upsert = db.prepare(
 
 const { state, saveCreds } = await useMultiFileAuthState(authDir);
 
+const { version } = await fetchLatestWaWebVersion({}).catch(() => ({ version: undefined }));
+
 const sock = makeWASocket({
+  version,
   auth: { creds: state.creds, keys: makeCacheableSignalKeyStore(state.keys, logger) },
   printQRInTerminal: false,
   logger,
@@ -158,19 +161,32 @@ sock.ev.on('connection.update', async (update) => {
 });
 `;
 
-    const output = execSync(
-      `node --input-type=module -e ${JSON.stringify(syncScript)}`,
-      {
+    const tmpScript = path.join(projectRoot, '.sync-groups.mjs');
+    fs.writeFileSync(tmpScript, syncScript, 'utf-8');
+    try {
+      const output = execSync(`node ${tmpScript}`, {
         cwd: projectRoot,
         encoding: 'utf-8',
         timeout: 45000,
         stdio: ['ignore', 'pipe', 'pipe'],
-      },
-    );
-    syncOk = output.includes('SYNCED:');
-    logger.info({ output: output.trim() }, 'Sync output');
-  } catch (err) {
-    logger.error({ err }, 'Sync failed');
+      });
+      syncOk = output.includes('SYNCED:');
+      logger.info({ output: output.trim() }, 'Sync output');
+    } catch (err: any) {
+      // The sync script may exit non-zero due to a race between sock.end()
+      // and the connection-close handler. Check stdout for SYNCED even on error.
+      const stdout = err?.stdout ?? '';
+      if (stdout.includes('SYNCED:')) {
+        syncOk = true;
+        logger.info({ output: stdout.trim() }, 'Sync output (exit race)');
+      } else {
+        logger.error({ err }, 'Sync failed');
+      }
+    } finally {
+      try {
+        fs.unlinkSync(tmpScript);
+      } catch {}
+    }
   }
 
   // Count groups in DB using better-sqlite3 (no sqlite3 CLI)

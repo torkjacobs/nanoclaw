@@ -39,6 +39,17 @@ import { resolveGroupFolderPath } from './group-folder.js';
 import { startIpcWatcher } from './ipc.js';
 import { findChannel, formatMessages, formatOutbound } from './router.js';
 import { startSchedulerLoop } from './task-scheduler.js';
+import {
+  handleDraftRequest,
+  handleRefineRequest,
+  isDraftRequest,
+  isRefineRequest,
+} from './tork-drafter.js';
+import {
+  isHealthCheckRequest,
+  runHealthCheck,
+  startHealthCheckTimer,
+} from './tork-monitor.js';
 import { Channel, NewMessage, RegisteredGroup } from './types.js';
 import { logger } from './logger.js';
 
@@ -384,6 +395,41 @@ async function startMessageLoop(): Promise<void> {
             if (!hasTrigger) continue;
           }
 
+          // Intercept host-level commands — respond directly, no container needed
+          const hostCmd = groupMessages.find(
+            (m) =>
+              isHealthCheckRequest(m.content) ||
+              isDraftRequest(m.content) ||
+              isRefineRequest(m.content),
+          );
+          if (hostCmd) {
+            const handleCmd = async () => {
+              let result: string;
+              if (isHealthCheckRequest(hostCmd.content)) {
+                result = await runHealthCheck();
+              } else if (isDraftRequest(hostCmd.content)) {
+                result = await handleDraftRequest(hostCmd.content, chatJid);
+              } else {
+                result = await handleRefineRequest(hostCmd.content, chatJid);
+              }
+              await channel.sendMessage(chatJid, result);
+            };
+            handleCmd().catch((err) =>
+              logger.error({ err }, 'Host command failed'),
+            );
+            const pending = getMessagesSince(
+              chatJid,
+              lastAgentTimestamp[chatJid] || '',
+              ASSISTANT_NAME,
+            );
+            if (pending.length > 0) {
+              lastAgentTimestamp[chatJid] =
+                pending[pending.length - 1].timestamp;
+              saveState();
+            }
+            continue;
+          }
+
           // Pull all messages since lastAgentTimestamp so non-trigger
           // context that accumulated between triggers is included.
           const allPending = getMessagesSince(
@@ -510,6 +556,18 @@ async function main(): Promise<void> {
     writeGroupsSnapshot: (gf, im, ag, rj) =>
       writeGroupsSnapshot(gf, im, ag, rj),
   });
+  // Start Tork website health check monitor (6-hour interval)
+  const mainGroupJid = Object.entries(registeredGroups).find(
+    ([, g]) => g.folder === MAIN_GROUP_FOLDER,
+  )?.[0];
+  if (mainGroupJid) {
+    startHealthCheckTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Tork health check monitor started (6h interval)');
+  }
+
   queue.setProcessMessagesFn(processGroupMessages);
   recoverPendingMessages();
   startMessageLoop().catch((err) => {
