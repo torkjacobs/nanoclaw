@@ -115,13 +115,21 @@ export async function runDigest(): Promise<string> {
     lines.push('');
     lines.push('Metrics:');
     if (metrics.totalRequests != null)
-      lines.push(`\u2022 Total requests: ${metrics.totalRequests.toLocaleString()}`);
+      lines.push(
+        `\u2022 Total requests: ${metrics.totalRequests.toLocaleString()}`,
+      );
     if (metrics.piiDetections != null)
-      lines.push(`\u2022 PII detections: ${metrics.piiDetections.toLocaleString()}`);
+      lines.push(
+        `\u2022 PII detections: ${metrics.piiDetections.toLocaleString()}`,
+      );
     if (metrics.policiesEnforced != null)
-      lines.push(`\u2022 Policies enforced: ${metrics.policiesEnforced.toLocaleString()}`);
+      lines.push(
+        `\u2022 Policies enforced: ${metrics.policiesEnforced.toLocaleString()}`,
+      );
     if (metrics.activeUsers != null)
-      lines.push(`\u2022 Active users: ${metrics.activeUsers.toLocaleString()}`);
+      lines.push(
+        `\u2022 Active users: ${metrics.activeUsers.toLocaleString()}`,
+      );
   }
 
   lines.push('');

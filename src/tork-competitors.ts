@@ -225,15 +225,11 @@ export async function runCompetitorCheck(): Promise<string | null> {
   }
 
   if (unchanged.length > 0) {
-    lines.push(
-      `No changes: ${unchanged.map((r) => r.name).join(', ')}`,
-    );
+    lines.push(`No changes: ${unchanged.map((r) => r.name).join(', ')}`);
   }
 
   if (errors.length > 0) {
-    lines.push(
-      `Unreachable: ${errors.map((r) => r.name).join(', ')}`,
-    );
+    lines.push(`Unreachable: ${errors.map((r) => r.name).join(', ')}`);
   }
 
   return lines.join('\n');

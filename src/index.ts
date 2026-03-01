@@ -56,6 +56,11 @@ import {
   runHealthCheck,
   startHealthCheckTimer,
 } from './tork-monitor.js';
+import {
+  getSocialStatus,
+  isSocialListenerRequest,
+  startSocialListenerTimer,
+} from './tork-social.js';
 import { Channel, NewMessage, RegisteredGroup } from './types.js';
 import { logger } from './logger.js';
 
@@ -408,7 +413,8 @@ async function startMessageLoop(): Promise<void> {
               isDraftRequest(m.content) ||
               isRefineRequest(m.content) ||
               isDigestRequest(m.content) ||
-              isCompetitorWatchRequest(m.content),
+              isCompetitorWatchRequest(m.content) ||
+              isSocialListenerRequest(m.content),
           );
           if (hostCmd) {
             const handleCmd = async () => {
@@ -421,6 +427,8 @@ async function startMessageLoop(): Promise<void> {
                 result = await runDigest();
               } else if (isCompetitorWatchRequest(hostCmd.content)) {
                 result = await getCompetitorStatus();
+              } else if (isSocialListenerRequest(hostCmd.content)) {
+                result = await getSocialStatus();
               } else {
                 result = await handleRefineRequest(hostCmd.content, chatJid);
               }
@@ -592,6 +600,13 @@ async function main(): Promise<void> {
       if (ch) await ch.sendMessage(mainGroupJid, text);
     });
     logger.info('Tork competitor watch started (12h interval)');
+
+    // Start Tork social listener timer (4-hour interval)
+    startSocialListenerTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Tork social listener started (4h interval)');
   }
 
   queue.setProcessMessagesFn(processGroupMessages);
