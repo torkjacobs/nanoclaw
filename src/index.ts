@@ -52,6 +52,12 @@ import {
   isRefineRequest,
 } from './tork-drafter.js';
 import {
+  getGovernanceStatus,
+  governInbound,
+  governOutbound,
+  isGovernanceRequest,
+} from './tork-guardian.js';
+import {
   handleLeadAdjust,
   handleLeadReply,
   isLeadAdjustRequest,
@@ -187,7 +193,27 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
     if (!hasTrigger) return true;
   }
 
-  const prompt = formatMessages(missedMessages);
+  let prompt = formatMessages(missedMessages);
+
+  // --- Tork Guardian: govern inbound ---
+  const inboundGov = await governInbound(prompt, { groupJid: chatJid });
+  if (!inboundGov.allowed) {
+    const blockMsg = `\u26A0\uFE0F This message was flagged by Tork governance and cannot be processed. Receipt: ${inboundGov.receipt_id || 'N/A'}`;
+    await channel.sendMessage(chatJid, blockMsg);
+    // Advance cursor past blocked messages so they aren't re-processed
+    lastAgentTimestamp[chatJid] =
+      missedMessages[missedMessages.length - 1].timestamp;
+    saveState();
+    return true;
+  }
+  if (inboundGov.piiDetected.length > 0) {
+    const originalLen = prompt.length;
+    prompt = inboundGov.sanitizedInput;
+    logger.info(
+      { group: group.name, charsRedacted: originalLen - prompt.length },
+      `Tork Guardian: sending sanitized prompt to container (${originalLen - prompt.length} chars redacted)`,
+    );
+  }
 
   // Advance cursor so the piping path in startMessageLoop won't re-fetch
   // these messages. Save the old cursor so we can roll back on error.
@@ -227,9 +253,14 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
           ? result.result
           : JSON.stringify(result.result);
       // Strip <internal>...</internal> blocks — agent uses these for internal reasoning
-      const text = raw.replace(/<internal>[\s\S]*?<\/internal>/g, '').trim();
+      let text = raw.replace(/<internal>[\s\S]*?<\/internal>/g, '').trim();
       logger.info({ group: group.name }, `Agent output: ${raw.slice(0, 200)}`);
       if (text) {
+        // --- Tork Guardian: govern outbound ---
+        const outboundGov = await governOutbound(text, { groupJid: chatJid });
+        if (outboundGov.piiDetected.length > 0) {
+          text = outboundGov.sanitizedInput;
+        }
         await channel.sendMessage(chatJid, text);
         outputSentToUser = true;
       }
@@ -422,7 +453,8 @@ async function startMessageLoop(): Promise<void> {
               isCompetitorWatchRequest(m.content) ||
               isSocialListenerRequest(m.content) ||
               isLeadReplyRequest(m.content) ||
-              isLeadAdjustRequest(m.content),
+              isLeadAdjustRequest(m.content) ||
+              isGovernanceRequest(m.content),
           );
           if (hostCmd) {
             const handleCmd = async () => {
@@ -441,6 +473,8 @@ async function startMessageLoop(): Promise<void> {
                 result = await handleLeadReply(hostCmd.content, chatJid);
               } else if (isLeadAdjustRequest(hostCmd.content)) {
                 result = await handleLeadAdjust(hostCmd.content, chatJid);
+              } else if (isGovernanceRequest(hostCmd.content)) {
+                result = getGovernanceStatus();
               } else {
                 result = await handleRefineRequest(hostCmd.content, chatJid);
               }
@@ -471,7 +505,26 @@ async function startMessageLoop(): Promise<void> {
           );
           const messagesToSend =
             allPending.length > 0 ? allPending : groupMessages;
-          const formatted = formatMessages(messagesToSend);
+          let formatted = formatMessages(messagesToSend);
+
+          // --- Tork Guardian: govern inbound (piping path) ---
+          const pipeGov = await governInbound(formatted, { groupJid: chatJid });
+          if (!pipeGov.allowed) {
+            const blockMsg = `\u26A0\uFE0F This message was flagged by Tork governance and cannot be processed. Receipt: ${pipeGov.receipt_id || 'N/A'}`;
+            await channel.sendMessage(chatJid, blockMsg);
+            lastAgentTimestamp[chatJid] =
+              messagesToSend[messagesToSend.length - 1].timestamp;
+            saveState();
+            continue;
+          }
+          if (pipeGov.piiDetected.length > 0) {
+            const originalLen = formatted.length;
+            formatted = pipeGov.sanitizedInput;
+            logger.info(
+              { chatJid, charsRedacted: originalLen - formatted.length },
+              `Tork Guardian: sending sanitized prompt to container (${originalLen - formatted.length} chars redacted)`,
+            );
+          }
 
           if (queue.sendMessage(chatJid, formatted)) {
             logger.debug(

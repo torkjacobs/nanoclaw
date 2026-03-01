@@ -84,10 +84,16 @@ function saveStats(stats: GovernanceStats): void {
 }
 
 function incrementStats(
-  update: Partial<Pick<GovernanceStats, 'messagesGoverned' | 'piiDetections' | 'policyBlocks' | 'lastReceiptId'>>,
+  update: Partial<
+    Pick<
+      GovernanceStats,
+      'messagesGoverned' | 'piiDetections' | 'policyBlocks' | 'lastReceiptId'
+    >
+  >,
 ): void {
   const stats = loadStats();
-  if (update.messagesGoverned) stats.messagesGoverned += update.messagesGoverned;
+  if (update.messagesGoverned)
+    stats.messagesGoverned += update.messagesGoverned;
   if (update.piiDetections) stats.piiDetections += update.piiDetections;
   if (update.policyBlocks) stats.policyBlocks += update.policyBlocks;
   if (update.lastReceiptId) stats.lastReceiptId = update.lastReceiptId;
@@ -158,7 +164,9 @@ async function callGovernApi(
 
     // Validate expected shape
     if (typeof raw !== 'object' || raw === null) {
-      logger.error('Tork governance API returned unexpected format — allowing message through');
+      logger.error(
+        'Tork governance API returned unexpected format — allowing message through',
+      );
       return {
         allowed: true,
         sanitizedInput: input,
@@ -179,7 +187,11 @@ async function callGovernApi(
     return {
       allowed: action !== 'deny',
       sanitizedInput: (data.output as string) || input,
-      piiDetected: Array.isArray(piiField) ? piiField : [],
+      piiDetected: Array.isArray(piiField)
+        ? piiField.map((p: unknown) =>
+            typeof p === 'string' ? p : (p as Record<string, unknown>)?.type as string || String(p),
+          )
+        : [],
       receipt_id: (receipt?.receipt_id as string) || '',
       flags: Array.isArray(data.flags) ? (data.flags as string[]) : [],
     };
@@ -225,8 +237,12 @@ export async function governInbound(
     );
   } else if (result.piiDetected.length > 0) {
     logger.warn(
-      { receiptId: result.receipt_id, pii: result.piiDetected },
-      'Tork governance detected PII in inbound message — using sanitized version',
+      {
+        receiptId: result.receipt_id,
+        pii: result.piiDetected,
+        sanitizedInput: result.sanitizedInput,
+      },
+      `Tork Guardian: inbound PII detected [${result.piiDetected.join(', ')}], using sanitized input`,
     );
   } else {
     logger.info(
@@ -287,7 +303,9 @@ export async function governedProcess(
 ): Promise<{
   sanitizedInput: string;
   inboundResult: GovernResult;
-  governOutboundFn: (response: string) => Promise<{ text: string; result: GovernResult }>;
+  governOutboundFn: (
+    response: string,
+  ) => Promise<{ text: string; result: GovernResult }>;
 } | null> {
   const inboundResult = await governInbound(message, metadata);
 
