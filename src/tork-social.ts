@@ -66,7 +66,10 @@ function timeAgo(unixSeconds: number): string {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-async function fetchJson(url: string, headers?: Record<string, string>): Promise<unknown | null> {
+async function fetchJson(
+  url: string,
+  headers?: Record<string, string>,
+): Promise<unknown | null> {
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -120,10 +123,7 @@ interface RedditResponse {
 }
 
 async function searchHackerNews(sinceUnix: number): Promise<Mention[]> {
-  const queries = [
-    'tork+network+ai',
-    'tork+governance+ai',
-  ];
+  const queries = ['tork+network+ai', 'tork+governance+ai'];
   const mentions: Mention[] = [];
   const seenIds = new Set<string>();
 
@@ -249,7 +249,9 @@ export async function runSocialCheck(): Promise<string | null> {
   if (hnMentions.length > 0) {
     lines.push('', '\u{1F7E0} Hacker News:');
     for (const m of hnMentions) {
-      lines.push(`\u2022 ${m.title} \u2014 by ${m.author} (${timeAgo(m.timestamp)})`);
+      lines.push(
+        `\u2022 ${m.title} \u2014 by ${m.author} (${timeAgo(m.timestamp)})`,
+      );
       lines.push(`  ${m.url}`);
     }
   }
@@ -304,7 +306,9 @@ export async function getSocialStatus(): Promise<string> {
   if (hnMentions.length > 0) {
     lines.push('', '\u{1F7E0} Hacker News:');
     for (const m of hnMentions) {
-      lines.push(`\u2022 ${m.title} \u2014 by ${m.author} (${timeAgo(m.timestamp)})`);
+      lines.push(
+        `\u2022 ${m.title} \u2014 by ${m.author} (${timeAgo(m.timestamp)})`,
+      );
       lines.push(`  ${m.url}`);
     }
   }
