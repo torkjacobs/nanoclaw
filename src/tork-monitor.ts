@@ -49,7 +49,9 @@ const ENDPOINTS: EndpointConfig[] = [
 const HEALTH_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000; // 6 hours
 const REQUEST_TIMEOUT_MS = 15_000;
 
-async function checkEndpoint(endpoint: EndpointConfig): Promise<EndpointResult> {
+async function checkEndpoint(
+  endpoint: EndpointConfig,
+): Promise<EndpointResult> {
   const start = Date.now();
   try {
     const controller = new AbortController();

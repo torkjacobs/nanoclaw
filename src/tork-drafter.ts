@@ -37,7 +37,11 @@ export function isRefineRequest(content: string): boolean {
 
 function detectContentType(description: string): string {
   const lower = description.toLowerCase();
-  if (lower.includes('tweet') || lower.includes('twitter') || lower.includes(' x post'))
+  if (
+    lower.includes('tweet') ||
+    lower.includes('twitter') ||
+    lower.includes(' x post')
+  )
     return 'Tweet';
   if (lower.includes('linkedin')) return 'LinkedIn Post';
   if (lower.includes('blog')) return 'Blog Post';
@@ -46,38 +50,24 @@ function detectContentType(description: string): string {
   return 'LinkedIn Post'; // default
 }
 
-function getApiCredentials(): { token: string; isOAuth: boolean } | null {
-  const env = readEnvFile(['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KEY']);
-
-  if (env.CLAUDE_CODE_OAUTH_TOKEN) {
-    return { token: env.CLAUDE_CODE_OAUTH_TOKEN, isOAuth: true };
-  }
-  if (env.ANTHROPIC_API_KEY) {
-    return { token: env.ANTHROPIC_API_KEY, isOAuth: false };
-  }
-  return null;
+function getApiKey(): string | null {
+  const env = readEnvFile(['ANTHROPIC_API_KEY']);
+  return env.ANTHROPIC_API_KEY || null;
 }
 
 async function callClaudeAPI(
   messages: Array<{ role: 'user' | 'assistant'; content: string }>,
 ): Promise<string> {
-  const creds = getApiCredentials();
-  if (!creds) {
-    throw new Error(
-      'No Claude API credentials found. Set CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY in .env',
-    );
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    throw new Error('No ANTHROPIC_API_KEY found in .env');
   }
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     'anthropic-version': '2023-06-01',
+    'x-api-key': apiKey,
   };
-
-  if (creds.isOAuth) {
-    headers['Authorization'] = `Bearer ${creds.token}`;
-  } else {
-    headers['x-api-key'] = creds.token;
-  }
 
   const response = await fetch(API_URL, {
     method: 'POST',
@@ -162,15 +152,15 @@ export async function handleRefineRequest(
     return "No previous draft to refine. Use '@tork draft [description]' first.";
   }
 
-  logger.info(
-    { contentType: previous.type, feedback },
-    'Refining draft',
-  );
+  logger.info({ contentType: previous.type, feedback }, 'Refining draft');
 
   try {
     const messages: Array<{ role: 'user' | 'assistant'; content: string }> = [
       ...previous.messages,
-      { role: 'user', content: `Revise the draft with this feedback: ${feedback}` },
+      {
+        role: 'user',
+        content: `Revise the draft with this feedback: ${feedback}`,
+      },
     ];
 
     const refined = await callClaudeAPI(messages);
