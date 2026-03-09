@@ -64,15 +64,48 @@ import {
   isLeadReplyRequest,
 } from './tork-leads.js';
 import {
+  handleContentGeneration,
+  handleMarketingCommand,
+  isMarketingRequest,
+  startDailyTweetTimer,
+  startWeeklyBookTweetTimer,
+  startWeeklyDevtoTimer,
+  startWeeklyThreadTimer,
+} from './tork-marketing.js';
+import {
+  handleAnalyticsCommand,
+  isAnalyticsRequest,
+  startDailyMetricsTimer,
+} from './tork-analytics.js';
+import {
+  handleClaimsCommand,
+  isClaimsRequest,
+} from './tork-claims.js';
+import {
+  handleSignupCommand,
+  isSignupRequest,
+  startSignupNotifier,
+} from './tork-signups.js';
+import {
   isHealthCheckRequest,
   runHealthCheck,
   startHealthCheckTimer,
 } from './tork-monitor.js';
 import {
+  handleSeoCommand,
+  isSeoRequest,
+  startWeeklySeoTimer,
+} from './tork-seo.js';
+import {
   getSocialStatus,
   isSocialListenerRequest,
   startSocialListenerTimer,
 } from './tork-social.js';
+import { initSwarm } from './tork-swarm.js';
+import {
+  handleMarketingEngineCommand,
+  isMarketingEngineRequest,
+} from './skills/marketing/index.js';
 import { Channel, NewMessage, RegisteredGroup } from './types.js';
 import { logger } from './logger.js';
 
@@ -454,7 +487,13 @@ async function startMessageLoop(): Promise<void> {
               isSocialListenerRequest(m.content) ||
               isLeadReplyRequest(m.content) ||
               isLeadAdjustRequest(m.content) ||
-              isGovernanceRequest(m.content),
+              isGovernanceRequest(m.content) ||
+              isMarketingRequest(m.content) ||
+              isMarketingEngineRequest(m.content) ||
+              isAnalyticsRequest(m.content) ||
+              isSignupRequest(m.content) ||
+              isClaimsRequest(m.content) ||
+              isSeoRequest(m.content),
           );
           if (hostCmd) {
             const handleCmd = async () => {
@@ -475,6 +514,18 @@ async function startMessageLoop(): Promise<void> {
                 result = await handleLeadAdjust(hostCmd.content, chatJid);
               } else if (isGovernanceRequest(hostCmd.content)) {
                 result = getGovernanceStatus();
+              } else if (isMarketingEngineRequest(hostCmd.content)) {
+                result = await handleMarketingEngineCommand(hostCmd.content);
+              } else if (isMarketingRequest(hostCmd.content)) {
+                result = await handleMarketingCommand(hostCmd.content);
+              } else if (isAnalyticsRequest(hostCmd.content)) {
+                result = await handleAnalyticsCommand();
+              } else if (isSignupRequest(hostCmd.content)) {
+                result = await handleSignupCommand();
+              } else if (isClaimsRequest(hostCmd.content)) {
+                result = await handleClaimsCommand(hostCmd.content);
+              } else if (isSeoRequest(hostCmd.content)) {
+                result = await handleSeoCommand();
               } else {
                 result = await handleRefineRequest(hostCmd.content, chatJid);
               }
@@ -646,6 +697,17 @@ async function main(): Promise<void> {
     ([, g]) => g.folder === MAIN_GROUP_FOLDER,
   )?.[0];
   if (mainGroupJid) {
+    // Initialize the Swarm Coordinator with content generation and messaging
+    initSwarm({
+      generateContent: (platform, topic) =>
+        handleContentGeneration(platform, topic),
+      sendMessage: async (text) => {
+        const ch = findChannel(channels, mainGroupJid);
+        if (ch) await ch.sendMessage(mainGroupJid, text);
+      },
+    });
+    logger.info('Swarm coordinator initialized');
+
     startHealthCheckTimer(async (text) => {
       const ch = findChannel(channels, mainGroupJid);
       if (ch) await ch.sendMessage(mainGroupJid, text);
@@ -672,6 +734,55 @@ async function main(): Promise<void> {
       if (ch) await ch.sendMessage(mainGroupJid, text);
     });
     logger.info('Tork social listener started (4h interval)');
+
+    // Start weekly Dev.to article generator (Friday 9 AM AEST)
+    startWeeklyDevtoTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Weekly Dev.to article timer started (Friday 11 AM AEST)');
+
+    // Start daily tweet timer (Mon-Fri 10:00 AM AEST)
+    startDailyTweetTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Daily tweet timer started (Mon-Fri 10:00 AM AEST)');
+
+    // Start weekly thread timer (Tue & Thu 11:00 AM AEST)
+    startWeeklyThreadTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Weekly thread timer started (Tue & Thu 11:00 AM AEST)');
+
+    // Start weekly book promo tweet timer (Wed 11 AM AEST)
+    startWeeklyBookTweetTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Weekly book tweet timer started (Wed 11 AM AEST)');
+
+    // Start daily metrics timer (8:10 AM AEST)
+    startDailyMetricsTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Daily metrics timer started (8:10 AM AEST)');
+
+    // Start signup notifier (poll every 60s)
+    startSignupNotifier(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Signup notifier started (polling every 60s)');
+
+    // Start weekly SEO timer (Monday 9 AM AEST)
+    startWeeklySeoTimer(async (text) => {
+      const ch = findChannel(channels, mainGroupJid);
+      if (ch) await ch.sendMessage(mainGroupJid, text);
+    });
+    logger.info('Weekly SEO timer started (Monday 9 AM AEST)');
   }
 
   queue.setProcessMessagesFn(processGroupMessages);
