@@ -1,6 +1,6 @@
 ---
 title: "How We Deployed AI Customer Service for a Vehicle Rental Company in 2 Weeks"
-published: false
+published: true
 description: "A case study on deploying a multi-agent AI assistant for a vehicle rental operator — 7 specialist agents, governance from day one, and 70%+ enquiry automation."
 tags: ai, casestudy, startup, saas
 canonical_url: https://tork.network/blog/vehicle-rental-ai-case-study

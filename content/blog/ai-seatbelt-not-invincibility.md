@@ -1,6 +1,6 @@
 ---
 title: "AI Governance Is a Seatbelt, Not Invincibility — And That's the Point"
-published: false
+published: true
 description: "Governance vendors who promise 100% protection are lying. The honest pitch: governance reduces risk, logs everything, and gives you a defensible position when things go wrong."
 tags: ai, governance, startups, opinion
 canonical_url: https://tork.network/blog/ai-seatbelt-not-invincibility

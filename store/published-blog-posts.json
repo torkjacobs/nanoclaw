@@ -1,0 +1,44 @@
+[
+  {
+    "title": "We Built a Multi-Agent AI Customer Assistant with Built-In Governance — Here's How",
+    "file": "content/blog/tork-chat-launch.md",
+    "devto_url": "https://dev.to/torkjacobs/we-built-a-multi-agent-ai-customer-assistant-with-built-in-governance-heres-how-128p",
+    "hashnode_url": "https://torknetwork.hashnode.dev/tork-chat-launch"
+  },
+  {
+    "title": "Why Your AI Chatbot Needs Governance Before It Needs Features",
+    "file": "content/blog/ai-governance-before-features.md",
+    "devto_url": "https://dev.to/torkjacobs/why-your-ai-chatbot-needs-governance-before-it-needs-features-233c",
+    "hashnode_url": "https://torknetwork.hashnode.dev/ai-governance-before-features"
+  },
+  {
+    "title": "Building a Multi-Agent Customer Service System with LangGraph — A Practical Guide",
+    "file": "content/blog/langraph-multi-agent-tutorial.md",
+    "devto_url": "https://dev.to/torkjacobs/building-a-multi-agent-customer-service-system-with-langgraph-a-practical-guide-43b5",
+    "hashnode_url": "https://torknetwork.hashnode.dev/langraph-multi-agent-tutorial"
+  },
+  {
+    "title": "AI Governance Is a Seatbelt, Not Invincibility — And That's the Point",
+    "file": "content/blog/ai-seatbelt-not-invincibility.md",
+    "devto_url": "https://dev.to/torkjacobs/ai-governance-is-a-seatbelt-not-invincibility-and-thats-the-point-2ikh",
+    "hashnode_url": "https://torknetwork.hashnode.dev/ai-seatbelt-not-invincibility"
+  },
+  {
+    "title": "How We Deployed AI Customer Service for a Vehicle Rental Company in 2 Weeks",
+    "file": "content/blog/vehicle-rental-ai-case-study.md",
+    "devto_url": "https://dev.to/torkjacobs/how-we-deployed-ai-customer-service-for-a-vehicle-rental-company-in-2-weeks-1cb",
+    "hashnode_url": "https://torknetwork.hashnode.dev/vehicle-rental-ai-case-study"
+  },
+  {
+    "title": "I Compared 5 AI Chatbot Platforms on Governance — Here's What I Found",
+    "file": "content/blog/ai-chatbot-governance-comparison.md",
+    "devto_url": "https://dev.to/torkjacobs/i-compared-5-ai-chatbot-platforms-on-governance-heres-what-i-found-59e8",
+    "hashnode_url": "https://torknetwork.hashnode.dev/ai-chatbot-governance-comparison"
+  },
+  {
+    "title": "The 15-Point Checklist Before Deploying AI Customer-Facing",
+    "file": "content/blog/ai-deployment-checklist.md",
+    "devto_url": "https://dev.to/torkjacobs/the-15-point-checklist-before-deploying-ai-customer-facing-3ic6",
+    "hashnode_url": "https://torknetwork.hashnode.dev/ai-deployment-checklist"
+  }
+]

@@ -1,6 +1,6 @@
 ---
 title: "Building a Multi-Agent Customer Service System with LangGraph — A Practical Guide"
-published: false
+published: true
 description: "A step-by-step guide to building a multi-agent AI customer assistant with LangGraph, Claude, and RAG — from state definition to production routing."
 tags: ai, langgraph, python, tutorial
 canonical_url: https://tork.network/blog/langgraph-multi-agent-tutorial

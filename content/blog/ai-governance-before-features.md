@@ -1,6 +1,6 @@
 ---
 title: "Why Your AI Chatbot Needs Governance Before It Needs Features"
-published: false
+published: true
 description: "Most teams build AI features first and governance last. That order gets companies sued. Here's why governance is the foundation, not the finish line."
 tags: ai, governance, compliance, security
 canonical_url: https://tork.network/blog/ai-governance-before-features

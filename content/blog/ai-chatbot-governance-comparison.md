@@ -1,6 +1,6 @@
 ---
 title: "I Compared 5 AI Chatbot Platforms on Governance — Here's What I Found"
-published: false
+published: true
 description: "A governance-focused comparison of Tidio, Chatbase, Intercom Fin, Freshchat, and Tork Chat — tested against PII detection, audit trails, compliance receipts, escalation, and policy enforcement."
 tags: ai, chatbot, comparison, governance
 canonical_url: https://tork.network/blog/ai-chatbot-governance-comparison

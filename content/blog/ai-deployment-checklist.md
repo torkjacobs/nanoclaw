@@ -1,6 +1,6 @@
 ---
 title: "The 15-Point Checklist Before Deploying AI Customer-Facing"
-published: false
+published: true
 description: "15 things to verify before your AI talks to customers — covering security, governance, compliance, and quality. Print it. Check it. Ship when it's green."
 tags: ai, checklist, deployment, governance
 canonical_url: https://tork.network/blog/ai-deployment-checklist

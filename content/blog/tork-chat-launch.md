@@ -1,6 +1,6 @@
 ---
 title: "We Built a Multi-Agent AI Customer Assistant with Built-In Governance — Here's How"
-published: false
+published: true
 description: "How we built Tork Chat: 7 specialist AI agents orchestrated by LangGraph, with governance-first design, RAG retrieval, and SSE streaming — deployed in vehicle rental."
 tags: ai, agents, governance, langgraph
 canonical_url: https://tork.network/blog/tork-chat-launch
