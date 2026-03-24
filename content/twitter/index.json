@@ -1,0 +1,58 @@
+[
+  {
+    "filename": "thread-tork-chat-launch.md",
+    "title": "We Built a Multi-Agent AI Customer Assistant with Built-In Governance — Here's How",
+    "dev_to_url": "https://dev.to/torkjacobs/we-built-a-multi-agent-ai-customer-assistant-with-built-in-governance-heres-how-128p",
+    "tweet_count": 7,
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "thread-ai-governance-before-features.md",
+    "title": "Why Your AI Assistant Needs Governance Before It Needs Features",
+    "dev_to_url": "https://dev.to/torkjacobs/why-your-ai-chatbot-needs-governance-before-it-needs-features-233c",
+    "tweet_count": 6,
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "thread-langgraph-multi-agent-tutorial.md",
+    "title": "Building a Multi-Agent Customer Service System with LangGraph — A Practical Guide",
+    "dev_to_url": "https://dev.to/torkjacobs/building-a-multi-agent-customer-service-system-with-langgraph-a-practical-guide-43b5",
+    "tweet_count": 8,
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "thread-ai-seatbelt-not-invincibility.md",
+    "title": "AI Governance Is a Seatbelt, Not Invincibility — And That's the Point",
+    "dev_to_url": "https://dev.to/torkjacobs/ai-governance-is-a-seatbelt-not-invincibility-and-thats-the-point-2ikh",
+    "tweet_count": 7,
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "thread-vehicle-rental-case-study.md",
+    "title": "How We Deployed AI Customer Service for a Vehicle Rental Company in 2 Weeks",
+    "dev_to_url": "https://dev.to/torkjacobs/how-we-deployed-ai-customer-service-for-a-vehicle-rental-company-in-2-weeks-1cb",
+    "tweet_count": 7,
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "thread-ai-governance-comparison.md",
+    "title": "I Compared 5 AI Platforms on Governance — Here's What I Found",
+    "dev_to_url": "https://dev.to/torkjacobs/i-compared-5-ai-chatbot-platforms-on-governance-heres-what-i-found-59e8",
+    "tweet_count": 7,
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "thread-ai-deployment-checklist.md",
+    "title": "The 15-Point Checklist Before Deploying AI Customer-Facing",
+    "dev_to_url": "https://dev.to/torkjacobs/the-15-point-checklist-before-deploying-ai-customer-facing-3ic6",
+    "tweet_count": 8,
+    "status": "draft",
+    "created_at": "2026-03-24"
+  }
+]
