@@ -1,50 +1,57 @@
 [
   {
-    "filename": "01-tork-chat-launch.md",
-    "title": "We Built a Multi-Agent AI Customer Assistant — Behind the Scenes",
+    "filename": "linkedin-tork-chat-launch.md",
+    "title": "We Built a Multi-Agent AI Customer Assistant with Built-In Governance — Here's How",
     "dev_to_url": "https://dev.to/torkjacobs/we-built-a-multi-agent-ai-customer-assistant-with-built-in-governance-heres-how-128p",
+    "angle": "Behind-the-scenes builder story",
     "status": "draft",
     "created_at": "2026-03-24"
   },
   {
-    "filename": "02-governance-before-features.md",
-    "title": "Why Your AI Chatbot Needs Governance Before Features",
+    "filename": "linkedin-ai-governance-before-features.md",
+    "title": "Why Your AI Assistant Needs Governance Before It Needs Features",
     "dev_to_url": "https://dev.to/torkjacobs/why-your-ai-chatbot-needs-governance-before-it-needs-features-233c",
+    "angle": "Hot take / contrarian opinion",
     "status": "draft",
     "created_at": "2026-03-24"
   },
   {
-    "filename": "03-langgraph-multi-agent.md",
-    "title": "Building a Multi-Agent System with LangGraph",
+    "filename": "linkedin-langgraph-multi-agent-tutorial.md",
+    "title": "Building a Multi-Agent Customer Service System with LangGraph — A Practical Guide",
     "dev_to_url": "https://dev.to/torkjacobs/building-a-multi-agent-customer-service-system-with-langgraph-a-practical-guide-43b5",
+    "angle": "Technical tutorial teaser",
     "status": "draft",
     "created_at": "2026-03-24"
   },
   {
-    "filename": "04-seatbelt-not-invincibility.md",
-    "title": "AI Governance Is a Seatbelt, Not Invincibility",
+    "filename": "linkedin-ai-seatbelt-not-invincibility.md",
+    "title": "AI Governance Is a Seatbelt, Not Invincibility — And That's the Point",
     "dev_to_url": "https://dev.to/torkjacobs/ai-governance-is-a-seatbelt-not-invincibility-and-thats-the-point-2ikh",
+    "angle": "Honest positioning / trust-building",
     "status": "draft",
     "created_at": "2026-03-24"
   },
   {
-    "filename": "05-vehicle-rental-case-study.md",
-    "title": "How We Deployed AI Customer Service in 2 Weeks",
+    "filename": "linkedin-vehicle-rental-case-study.md",
+    "title": "How We Deployed AI Customer Service for a Vehicle Rental Company in 2 Weeks",
     "dev_to_url": "https://dev.to/torkjacobs/how-we-deployed-ai-customer-service-for-a-vehicle-rental-company-in-2-weeks-1cb",
+    "angle": "Case study / speed story",
     "status": "draft",
     "created_at": "2026-03-24"
   },
   {
-    "filename": "06-governance-comparison.md",
-    "title": "I Compared 5 AI Chatbot Platforms on Governance",
+    "filename": "linkedin-ai-governance-comparison.md",
+    "title": "I Compared 5 AI Platforms on Governance — Here's What I Found",
     "dev_to_url": "https://dev.to/torkjacobs/i-compared-5-ai-chatbot-platforms-on-governance-heres-what-i-found-59e8",
+    "angle": "Research / comparison hook",
     "status": "draft",
     "created_at": "2026-03-24"
   },
   {
-    "filename": "07-deployment-checklist.md",
-    "title": "The 15-Point Checklist Before Deploying AI",
+    "filename": "linkedin-ai-deployment-checklist.md",
+    "title": "The 15-Point Checklist Before Deploying AI Customer-Facing",
     "dev_to_url": "https://dev.to/torkjacobs/the-15-point-checklist-before-deploying-ai-customer-facing-3ic6",
+    "angle": "Practical value / save-this-post",
     "status": "draft",
     "created_at": "2026-03-24"
   }
