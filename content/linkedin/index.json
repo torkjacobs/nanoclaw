@@ -1,0 +1,51 @@
+[
+  {
+    "filename": "01-tork-chat-launch.md",
+    "title": "We Built a Multi-Agent AI Customer Assistant — Behind the Scenes",
+    "dev_to_url": "https://dev.to/torkjacobs/we-built-a-multi-agent-ai-customer-assistant-with-built-in-governance-heres-how-128p",
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "02-governance-before-features.md",
+    "title": "Why Your AI Chatbot Needs Governance Before Features",
+    "dev_to_url": "https://dev.to/torkjacobs/why-your-ai-chatbot-needs-governance-before-it-needs-features-233c",
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "03-langgraph-multi-agent.md",
+    "title": "Building a Multi-Agent System with LangGraph",
+    "dev_to_url": "https://dev.to/torkjacobs/building-a-multi-agent-customer-service-system-with-langgraph-a-practical-guide-43b5",
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "04-seatbelt-not-invincibility.md",
+    "title": "AI Governance Is a Seatbelt, Not Invincibility",
+    "dev_to_url": "https://dev.to/torkjacobs/ai-governance-is-a-seatbelt-not-invincibility-and-thats-the-point-2ikh",
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "05-vehicle-rental-case-study.md",
+    "title": "How We Deployed AI Customer Service in 2 Weeks",
+    "dev_to_url": "https://dev.to/torkjacobs/how-we-deployed-ai-customer-service-for-a-vehicle-rental-company-in-2-weeks-1cb",
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "06-governance-comparison.md",
+    "title": "I Compared 5 AI Chatbot Platforms on Governance",
+    "dev_to_url": "https://dev.to/torkjacobs/i-compared-5-ai-chatbot-platforms-on-governance-heres-what-i-found-59e8",
+    "status": "draft",
+    "created_at": "2026-03-24"
+  },
+  {
+    "filename": "07-deployment-checklist.md",
+    "title": "The 15-Point Checklist Before Deploying AI",
+    "dev_to_url": "https://dev.to/torkjacobs/the-15-point-checklist-before-deploying-ai-customer-facing-3ic6",
+    "status": "draft",
+    "created_at": "2026-03-24"
+  }
+]
