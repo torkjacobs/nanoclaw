@@ -54,7 +54,13 @@ const TAGLINE =
 const DESC_SHORT =
   'Tork is the governance layer for AI agents. Real-time PII detection in ~20ms, policy enforcement across 79+ compliance frameworks (SOC 2, GDPR, HIPAA, EU AI Act), and cryptographic compliance receipts. Available as API, MCP server, and 11 native SDKs. Free tier: 5,000 API calls/month.';
 
-const TAGS_AI = ['ai-governance', 'pii-detection', 'compliance', 'ai-security', 'mcp'];
+const TAGS_AI = [
+  'ai-governance',
+  'pii-detection',
+  'compliance',
+  'ai-security',
+  'mcp',
+];
 const TAGS_DEV = ['developer-tools', 'ai-governance', 'sdk', 'api', 'security'];
 const TAGS_SAAS = ['saas', 'ai-governance', 'compliance', 'security', 'api'];
 
@@ -91,7 +97,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_SAAS,
       website: 'https://tork.network',
     },
-    notes: 'Free submission takes 2-4 weeks for review. Paid option for faster listing.',
+    notes:
+      'Free submission takes 2-4 weeks for review. Paid option for faster listing.',
   },
   {
     name: 'StackShare',
@@ -106,7 +113,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_DEV,
       website: 'https://tork.network',
     },
-    notes: 'Add to Developer Tools > Security category. Include SDK integrations list.',
+    notes:
+      'Add to Developer Tools > Security category. Include SDK integrations list.',
   },
   {
     name: 'G2',
@@ -135,7 +143,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_AI,
       website: 'https://tork.network',
     },
-    notes: 'AI tools directory. Category: AI Security. Include pricing and features.',
+    notes:
+      'AI tools directory. Category: AI Security. Include pricing and features.',
   },
   {
     name: 'AlternativeTo',
@@ -150,7 +159,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_SAAS,
       website: 'https://tork.network',
     },
-    notes: 'Position as alternative to: Presidio, Private AI, Nightfall AI. Add comparison points.',
+    notes:
+      'Position as alternative to: Presidio, Private AI, Nightfall AI. Add comparison points.',
   },
   {
     name: 'SaaSHub',
@@ -179,7 +189,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_DEV,
       website: 'https://tork.network',
     },
-    notes: 'Developer-focused Product Hunt alternative. Good for dev tool launches.',
+    notes:
+      'Developer-focused Product Hunt alternative. Good for dev tool launches.',
   },
   {
     name: "There's An AI For That",
@@ -193,7 +204,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_AI,
       website: 'https://tork.network',
     },
-    notes: 'High-traffic AI directory. Category: AI Security / Governance. Free submission.',
+    notes:
+      'High-traffic AI directory. Category: AI Security / Governance. Free submission.',
   },
   {
     name: 'AI Tools Directory',
@@ -221,7 +233,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_AI,
       website: 'https://tork.network',
     },
-    notes: 'Large AI tools aggregator. Category: AI Security. Include pricing model.',
+    notes:
+      'Large AI tools aggregator. Category: AI Security. Include pricing model.',
   },
   {
     name: 'TopAI.tools',
@@ -284,7 +297,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_SAAS,
       website: 'https://tork.network',
     },
-    notes: 'Add product listing + write a milestone post about the launch. Engage in community.',
+    notes:
+      'Add product listing + write a milestone post about the launch. Engage in community.',
   },
   {
     name: 'Startup Buffer',
@@ -298,7 +312,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_SAAS,
       website: 'https://tork.network',
     },
-    notes: 'Startup discovery platform. Free submission. Include logo and screenshot.',
+    notes:
+      'Startup discovery platform. Free submission. Include logo and screenshot.',
   },
   {
     name: 'Launching Next',
@@ -356,7 +371,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_SAAS,
       website: 'https://tork.network',
     },
-    notes: 'Create company profile. Add team, market (AI Security), and stage (Pre-seed / Bootstrapped).',
+    notes:
+      'Create company profile. Add team, market (AI Security), and stage (Pre-seed / Bootstrapped).',
   },
   {
     name: 'GetApp',
@@ -370,7 +386,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_SAAS,
       website: 'https://tork.network',
     },
-    notes: 'Gartner-owned software comparison. Category: AI & Machine Learning > AI Governance.',
+    notes:
+      'Gartner-owned software comparison. Category: AI & Machine Learning > AI Governance.',
   },
   {
     name: 'Capterra',
@@ -384,7 +401,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_SAAS,
       website: 'https://tork.network',
     },
-    notes: 'Gartner-owned review site. Create vendor profile. Category: AI & Machine Learning.',
+    notes:
+      'Gartner-owned review site. Create vendor profile. Category: AI & Machine Learning.',
   },
 
   // ── P2: Submit this month (6) ──
@@ -401,7 +419,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: ['machine-learning', 'ai-safety', 'governance'],
       website: 'https://tork.network',
     },
-    notes: 'Use [P] tag for project posts. Keep technical, no marketing. Engage with comments.',
+    notes:
+      'Use [P] tag for project posts. Keep technical, no marketing. Engage with comments.',
   },
   {
     name: 'Reddit — r/artificial',
@@ -431,7 +450,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: ['side-project', 'ai', 'saas'],
       website: 'https://tork.network',
     },
-    notes: 'Personal story angle works best. Share the journey, not just the product.',
+    notes:
+      'Personal story angle works best. Share the journey, not just the product.',
   },
   {
     name: 'Reddit — r/startups',
@@ -446,7 +466,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: ['startup', 'ai', 'saas'],
       website: 'https://tork.network',
     },
-    notes: 'Post in weekly share thread. Follow sub rules strictly — no direct promotion outside threads.',
+    notes:
+      'Post in weekly share thread. Follow sub rules strictly — no direct promotion outside threads.',
   },
   {
     name: 'Slant',
@@ -477,7 +498,8 @@ export const DIRECTORY_TEMPLATES: DirectoryTemplate[] = [
       tags: TAGS_DEV,
       website: 'https://tork.network',
     },
-    notes: 'Create project listing. Category: Security > AI. Good for SEO backlink.',
+    notes:
+      'Create project listing. Category: Security > AI. Good for SEO backlink.',
   },
 ];
 
@@ -556,6 +578,24 @@ export function markDirectoryLive(name: string): boolean {
   return true;
 }
 
+/** Get all high-priority (P0) directories */
+export function getHighPriorityDirectories(): DirectoryTemplate[] {
+  return getDirectories().filter((d) => d.priority === 'P0');
+}
+
+/** Get directories suitable for automated submission */
+export function getAutomatableDirectories(): DirectoryTemplate[] {
+  const automatableNames = new Set([
+    'ToolPilot.ai',
+    'AI Tools Directory',
+    'SaaS Hub',
+    'SaaSHub',
+    'Toolify.ai',
+    'TopAI.tools',
+  ]);
+  return getDirectories().filter((d) => automatableNames.has(d.name));
+}
+
 /** Format directory dashboard for WhatsApp */
 export function formatDirectoryDashboard(): string {
   const dirs = getDirectories();
@@ -563,10 +603,7 @@ export function formatDirectoryDashboard(): string {
   const p1 = dirs.filter((d) => d.priority === 'P1');
   const p2 = dirs.filter((d) => d.priority === 'P2');
 
-  const formatGroup = (
-    label: string,
-    group: DirectoryTemplate[],
-  ): string[] => {
+  const formatGroup = (label: string, group: DirectoryTemplate[]): string[] => {
     const live = group.filter((d) => d.status === 'live');
     const submitted = group.filter((d) => d.status === 'submitted');
     const pending = group.filter((d) => d.status === 'pending');

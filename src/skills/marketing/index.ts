@@ -26,6 +26,8 @@ export {
   getDirectories,
   getDirectoriesByPriority,
   getDirectoriesByStatus,
+  getHighPriorityDirectories,
+  getAutomatableDirectories,
   markDirectorySubmitted,
   markDirectoryLive,
   formatDirectoryDashboard,
@@ -50,16 +52,16 @@ export {
 } from './module-b-content.js';
 
 // Module C: Auto-Publish Connectors
-export {
-  isPublishRequest,
-  handlePublishCommand,
-} from './module-c-publish.js';
+export { isPublishRequest, handlePublishCommand } from './module-c-publish.js';
 
 // ══════════════════════════════════════════════════════════════
 //  UNIFIED COMMAND DETECTION & ROUTING
 // ══════════════════════════════════════════════════════════════
 
-import { isContentQueueRequest, handleContentQueueCommand } from './module-b-content.js';
+import {
+  isContentQueueRequest,
+  handleContentQueueCommand,
+} from './module-b-content.js';
 import { isPublishRequest, handlePublishCommand } from './module-c-publish.js';
 
 /**
