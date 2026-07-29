@@ -1,0 +1,26 @@
+{
+  "name": "Bing Places",
+  "category": "general",
+  "required_fields": [
+    "Business Name",
+    "Category",
+    "Address",
+    "Phone",
+    "Website"
+  ],
+  "optional_fields": [
+    "Business Description",
+    "Hours",
+    "Photos",
+    "Service Area",
+    "Payment Methods"
+  ],
+  "char_limits": {
+    "Business Name": 255,
+    "Business Description": 5000,
+    "Phone": 20
+  },
+  "submission_url": "https://www.bingplaces.com",
+  "approval_time": "1-3 days",
+  "cost": "free"
+}

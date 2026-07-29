@@ -48,6 +48,7 @@ const ENDPOINTS: EndpointConfig[] = [
 
 const HEALTH_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000; // 6 hours
 const REQUEST_TIMEOUT_MS = 15_000;
+const SLOW_THRESHOLD_MS = 2000;
 
 async function checkEndpoint(
   endpoint: EndpointConfig,
@@ -166,15 +167,39 @@ export function startHealthCheckTimer(
 ): ReturnType<typeof setInterval> {
   const runCheck = async () => {
     try {
-      const result = await runHealthCheck();
-      await sendMessage(result);
+      const results = await checkEndpoints();
+      const hasProblems =
+        results.some((r) => !r.ok) ||
+        results.some(
+          (r) =>
+            r.responseTimeMs !== null && r.responseTimeMs > SLOW_THRESHOLD_MS,
+        );
+
+      logger.info(
+        {
+          allOk: results.every((r) => r.ok),
+          endpoints: results.map((r) => ({
+            name: r.name,
+            status: r.status,
+            ms: r.responseTimeMs,
+          })),
+        },
+        hasProblems
+          ? 'Tork scheduled health check: problems detected, alerting'
+          : 'Tork scheduled health check: all healthy, silent',
+      );
+
+      if (hasProblems) {
+        const message = await runHealthCheck();
+        await sendMessage(message);
+      }
     } catch (err) {
       logger.error({ err }, 'Tork scheduled health check failed');
     }
   };
 
-  // First check 30 seconds after startup (let WhatsApp connect first)
-  setTimeout(runCheck, 30_000);
+  // First check 60 seconds after startup (let WhatsApp connect first)
+  setTimeout(runCheck, 60_000);
 
   return setInterval(runCheck, HEALTH_CHECK_INTERVAL_MS);
 }

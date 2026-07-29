@@ -40,3 +40,24 @@ export function readEnvFile(keys: string[]): Record<string, string> {
 
   return result;
 }
+
+/**
+ * Update or append a single key=value in the .env file.
+ */
+export function updateEnvVar(key: string, value: string): void {
+  const envFile = path.join(process.cwd(), '.env');
+  let content: string;
+  try {
+    content = fs.readFileSync(envFile, 'utf-8');
+  } catch {
+    content = '';
+  }
+
+  const regex = new RegExp(`^${key}=.*$`, 'm');
+  if (regex.test(content)) {
+    content = content.replace(regex, `${key}=${value}`);
+  } else {
+    content = content.trimEnd() + `\n${key}=${value}\n`;
+  }
+  fs.writeFileSync(envFile, content);
+}

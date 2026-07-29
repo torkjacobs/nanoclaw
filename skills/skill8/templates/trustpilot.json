@@ -1,0 +1,26 @@
+{
+  "name": "Trustpilot",
+  "category": "saas",
+  "required_fields": [
+    "Company Name",
+    "Category",
+    "Website",
+    "Email",
+    "Company Size"
+  ],
+  "optional_fields": [
+    "Company Description",
+    "Phone",
+    "Address",
+    "Logo",
+    "Team Members"
+  ],
+  "char_limits": {
+    "Company Name": 255,
+    "Company Description": 4000,
+    "Email": 254
+  },
+  "submission_url": "https://business.trustpilot.com",
+  "approval_time": "2-3 days",
+  "cost": "free"
+}

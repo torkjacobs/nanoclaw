@@ -1,0 +1,26 @@
+{
+  "name": "Zapier App Directory",
+  "category": "marketplace",
+  "required_fields": [
+    "App Name",
+    "Description",
+    "Categories",
+    "Logo",
+    "Website"
+  ],
+  "optional_fields": [
+    "Help Documentation",
+    "Support Email",
+    "Privacy Policy",
+    "Screenshots",
+    "Integration Examples"
+  ],
+  "char_limits": {
+    "App Name": 255,
+    "Description": 2000,
+    "Categories": 200
+  },
+  "submission_url": "https://zapier.com/platform/publish/",
+  "approval_time": "3-5 days",
+  "cost": "free"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Salesforce AppExchange",
+  "category": "marketplace",
+  "required_fields": [
+    "App Name",
+    "Description",
+    "Category",
+    "Publisher",
+    "Documentation"
+  ],
+  "optional_fields": [
+    "Pricing",
+    "Free Trial",
+    "Support Information",
+    "Screenshots",
+    "Video Demo"
+  ],
+  "char_limits": {
+    "App Name": 255,
+    "Description": 4000,
+    "Category": 100
+  },
+  "submission_url": "https://appexchange.salesforce.com",
+  "approval_time": "2-4 weeks",
+  "cost": "varies"
+}

@@ -19,7 +19,12 @@ import { logger } from '../../logger.js';
 //  TYPES
 // ══════════════════════════════════════════════════════════════
 
-export type ContentType = 'blog' | 'devto' | 'linkedin' | 'twitter' | 'hashnode';
+export type ContentType =
+  | 'blog'
+  | 'devto'
+  | 'linkedin'
+  | 'twitter'
+  | 'hashnode';
 
 export type ContentStatus =
   | 'draft'
@@ -244,7 +249,10 @@ export async function generateContent(
       ? TOPIC_TEMPLATES[topicIndex]
       : TOPIC_TEMPLATES[0];
 
-  logger.info({ type, topic, topicIndex }, 'Generating marketing content draft');
+  logger.info(
+    { type, topic, topicIndex },
+    'Generating marketing content draft',
+  );
 
   const body = await callClaude(
     prompt,
@@ -321,10 +329,7 @@ export function rejectContent(id: number, reason: string): ContentRow | null {
 }
 
 /** Mark content as published */
-export function markPublished(
-  id: number,
-  url: string,
-): ContentRow | null {
+export function markPublished(id: number, url: string): ContentRow | null {
   const database = getDb();
   const now = new Date().toISOString();
   database
@@ -338,7 +343,9 @@ export function markPublished(
 }
 
 /** Rewrite an approved draft using the quality model */
-export async function rewriteForPublish(id: number): Promise<ContentRow | null> {
+export async function rewriteForPublish(
+  id: number,
+): Promise<ContentRow | null> {
   const item = getContentById(id);
   if (!item || item.status !== 'approved') return null;
 
@@ -367,14 +374,22 @@ export async function rewriteForPublish(id: number): Promise<ContentRow | null> 
 
 // Patterns accept both "!content ..." and "@tork !content ..."
 const PREFIX = /^(?:@tork\s+)?/;
-const CONTENT_GENERATE_PATTERN =
-  new RegExp(PREFIX.source + /!content\s+generate\s+(\w+)\s+(\d+)\s*$/.source, 'i');
-const CONTENT_LIST_PATTERN =
-  new RegExp(PREFIX.source + /!content\s+list\s*$/.source, 'i');
-const CONTENT_APPROVE_PATTERN =
-  new RegExp(PREFIX.source + /!content\s+approve\s+(\d+)\s*$/.source, 'i');
-const CONTENT_REJECT_PATTERN =
-  new RegExp(PREFIX.source + /!content\s+reject\s+(\d+)\s+([\s\S]+)/.source, 'i');
+const CONTENT_GENERATE_PATTERN = new RegExp(
+  PREFIX.source + /!content\s+generate\s+(\w+)\s+(\d+)\s*$/.source,
+  'i',
+);
+const CONTENT_LIST_PATTERN = new RegExp(
+  PREFIX.source + /!content\s+list\s*$/.source,
+  'i',
+);
+const CONTENT_APPROVE_PATTERN = new RegExp(
+  PREFIX.source + /!content\s+approve\s+(\d+)\s*$/.source,
+  'i',
+);
+const CONTENT_REJECT_PATTERN = new RegExp(
+  PREFIX.source + /!content\s+reject\s+(\d+)\s+([\s\S]+)/.source,
+  'i',
+);
 
 // Broad detection: matches any message starting with "!content"
 const CONTENT_CMD_DETECT = /^(?:@tork\s+)?!content\b/i;
@@ -411,7 +426,8 @@ export async function handleContentQueueCommand(
         `Draft #${row.id} generated (${row.type}):`,
         `Topic: ${row.topic}`,
         '---',
-        row.body.slice(0, 1000) + (row.body.length > 1000 ? '\n...(truncated)' : ''),
+        row.body.slice(0, 1000) +
+          (row.body.length > 1000 ? '\n...(truncated)' : ''),
         '---',
         `Use @tork !content approve ${row.id} to approve`,
       ].join('\n');

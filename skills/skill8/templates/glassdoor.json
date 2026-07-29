@@ -1,0 +1,26 @@
+{
+  "name": "Glassdoor",
+  "category": "saas",
+  "required_fields": [
+    "Company Name",
+    "Industry",
+    "Headquarters",
+    "Website",
+    "Company Size"
+  ],
+  "optional_fields": [
+    "Company Description",
+    "Founded Date",
+    "Revenue",
+    "CEO",
+    "Logo"
+  ],
+  "char_limits": {
+    "Company Name": 255,
+    "Company Description": 2000,
+    "Industry": 100
+  },
+  "submission_url": "https://www.glassdoor.com/employers",
+  "approval_time": "1-2 weeks",
+  "cost": "free"
+}

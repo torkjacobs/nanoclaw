@@ -1,0 +1,26 @@
+{
+  "name": "Docker Hub",
+  "category": "tech",
+  "required_fields": [
+    "Repository Name",
+    "Description",
+    "Dockerfile",
+    "README",
+    "Author"
+  ],
+  "optional_fields": [
+    "License",
+    "Tags",
+    "Source URL",
+    "Documentation",
+    "Support Info"
+  ],
+  "char_limits": {
+    "Repository Name": 255,
+    "Description": 1000,
+    "README": 100000
+  },
+  "submission_url": "https://hub.docker.com",
+  "approval_time": "Immediate",
+  "cost": "free"
+}

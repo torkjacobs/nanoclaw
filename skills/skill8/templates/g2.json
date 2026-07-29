@@ -1,0 +1,27 @@
+{
+  "name": "G2",
+  "category": "saas",
+  "required_fields": [
+    "Product Name",
+    "Category",
+    "Description",
+    "Website",
+    "Company",
+    "Pricing Model"
+  ],
+  "optional_fields": [
+    "Logo",
+    "Screenshots",
+    "Features List",
+    "Integrations",
+    "Customer Support"
+  ],
+  "char_limits": {
+    "Product Name": 255,
+    "Description": 5000,
+    "Category": 100
+  },
+  "submission_url": "https://www.g2.com/products/new",
+  "approval_time": "3-5 days",
+  "cost": "free"
+}

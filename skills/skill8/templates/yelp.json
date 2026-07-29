@@ -1,0 +1,26 @@
+{
+  "name": "Yelp",
+  "category": "general",
+  "required_fields": [
+    "Business Name",
+    "Address",
+    "Phone",
+    "Category",
+    "Website"
+  ],
+  "optional_fields": [
+    "Business Description",
+    "Hours",
+    "Photos",
+    "Attributes",
+    "Reviews Response"
+  ],
+  "char_limits": {
+    "Business Name": 255,
+    "Business Description": 5000,
+    "Phone": 20
+  },
+  "submission_url": "https://business.yelp.com",
+  "approval_time": "2-4 weeks",
+  "cost": "free"
+}

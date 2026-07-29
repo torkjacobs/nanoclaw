@@ -1,0 +1,26 @@
+{
+  "name": "Indeed",
+  "category": "saas",
+  "required_fields": [
+    "Company Name",
+    "Website",
+    "Industry",
+    "Company Size",
+    "Headquarters"
+  ],
+  "optional_fields": [
+    "Company Description",
+    "Logo",
+    "Specialties",
+    "Founded Date",
+    "CEO"
+  ],
+  "char_limits": {
+    "Company Name": 255,
+    "Company Description": 2000,
+    "Industry": 100
+  },
+  "submission_url": "https://employers.indeed.com",
+  "approval_time": "3-5 days",
+  "cost": "free"
+}

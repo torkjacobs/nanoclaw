@@ -77,10 +77,7 @@ import {
   isAnalyticsRequest,
   startDailyMetricsTimer,
 } from './tork-analytics.js';
-import {
-  handleClaimsCommand,
-  isClaimsRequest,
-} from './tork-claims.js';
+import { handleClaimsCommand, isClaimsRequest } from './tork-claims.js';
 import {
   handleSignupCommand,
   isSignupRequest,

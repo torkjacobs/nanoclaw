@@ -1,0 +1,26 @@
+{
+  "name": "LinkedIn Company",
+  "category": "social",
+  "required_fields": [
+    "Company Name",
+    "Industry",
+    "Headquarters",
+    "Website",
+    "Company Size"
+  ],
+  "optional_fields": [
+    "Company Description",
+    "Logo",
+    "Banner Image",
+    "Specialties",
+    "Founded Date"
+  ],
+  "char_limits": {
+    "Company Name": 255,
+    "Company Description": 2000,
+    "Industry": 100
+  },
+  "submission_url": "https://www.linkedin.com/company",
+  "approval_time": "1-3 days",
+  "cost": "free"
+}

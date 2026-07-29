@@ -1,0 +1,26 @@
+{
+  "name": "HubSpot App Marketplace",
+  "category": "marketplace",
+  "required_fields": [
+    "App Name",
+    "Description",
+    "Category",
+    "Installation URL",
+    "Support Email"
+  ],
+  "optional_fields": [
+    "Pricing",
+    "Feature List",
+    "Documentation",
+    "Logo",
+    "Screenshots"
+  ],
+  "char_limits": {
+    "App Name": 255,
+    "Description": 2000,
+    "Category": 100
+  },
+  "submission_url": "https://ecosystem.hubspot.com/marketplace/apps",
+  "approval_time": "1-2 weeks",
+  "cost": "free"
+}

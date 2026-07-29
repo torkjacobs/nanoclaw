@@ -1,0 +1,26 @@
+{
+  "name": "Atlassian Marketplace",
+  "category": "marketplace",
+  "required_fields": [
+    "App Name",
+    "Description",
+    "Category",
+    "Vendor Details",
+    "Documentation"
+  ],
+  "optional_fields": [
+    "Support Information",
+    "Pricing",
+    "Screenshots",
+    "Video Demo",
+    "API Documentation"
+  ],
+  "char_limits": {
+    "App Name": 255,
+    "Description": 4000,
+    "Category": 100
+  },
+  "submission_url": "https://marketplace.atlassian.com",
+  "approval_time": "2-3 weeks",
+  "cost": "varies"
+}

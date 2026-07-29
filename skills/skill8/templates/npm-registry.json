@@ -1,0 +1,26 @@
+{
+  "name": "npm Registry",
+  "category": "tech",
+  "required_fields": [
+    "Package Name",
+    "Version",
+    "Description",
+    "Author",
+    "Repository URL"
+  ],
+  "optional_fields": [
+    "License",
+    "Keywords",
+    "Homepage",
+    "README",
+    "Documentation"
+  ],
+  "char_limits": {
+    "Package Name": 214,
+    "Description": 1000,
+    "Keywords": 200
+  },
+  "submission_url": "https://www.npmjs.com",
+  "approval_time": "Immediate",
+  "cost": "free"
+}

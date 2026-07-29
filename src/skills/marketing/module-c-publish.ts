@@ -34,12 +34,17 @@ type PublishResult =
 // ══════════════════════════════════════════════════════════════
 
 function getAnthropicKey(): string | null {
-  return process.env.ANTHROPIC_API_KEY || readEnvFile(['ANTHROPIC_API_KEY']).ANTHROPIC_API_KEY || null;
+  return (
+    process.env.ANTHROPIC_API_KEY ||
+    readEnvFile(['ANTHROPIC_API_KEY']).ANTHROPIC_API_KEY ||
+    null
+  );
 }
 
 function getDevtoKey(): string | null {
   // TODO: Add DEVTO_API_KEY to .env — get from https://dev.to/settings/extensions
-  const val = process.env.DEVTO_API_KEY || readEnvFile(['DEVTO_API_KEY']).DEVTO_API_KEY;
+  const val =
+    process.env.DEVTO_API_KEY || readEnvFile(['DEVTO_API_KEY']).DEVTO_API_KEY;
   return val && val !== 'MISSING' ? val : null;
 }
 
@@ -57,8 +62,7 @@ function getTwitterCredentials(): {
     'TWITTER_ACCESS_TOKEN',
     'TWITTER_ACCESS_SECRET',
   ]);
-  const consumerKey =
-    process.env.TWITTER_API_KEY || env.TWITTER_API_KEY;
+  const consumerKey = process.env.TWITTER_API_KEY || env.TWITTER_API_KEY;
   const consumerSecret =
     process.env.TWITTER_API_SECRET || env.TWITTER_API_SECRET;
   const accessToken =
@@ -80,8 +84,7 @@ function getLinkedInCredentials(): {
   const env = readEnvFile(['LINKEDIN_ACCESS_TOKEN', 'LINKEDIN_PERSON_ID']);
   const accessToken =
     process.env.LINKEDIN_ACCESS_TOKEN || env.LINKEDIN_ACCESS_TOKEN;
-  const personId =
-    process.env.LINKEDIN_PERSON_ID || env.LINKEDIN_PERSON_ID;
+  const personId = process.env.LINKEDIN_PERSON_ID || env.LINKEDIN_PERSON_ID;
 
   if (
     !accessToken ||
@@ -599,9 +602,13 @@ async function handleCommentCommand(
     COMMENT_PROMPT,
     `Write a comment for this discussion (${url}). Context: ${message}`,
   );
-  return [`Comment draft for ${url}:`, '---', draft, '---', 'Copy and paste manually.'].join(
-    '\n',
-  );
+  return [
+    `Comment draft for ${url}:`,
+    '---',
+    draft,
+    '---',
+    'Copy and paste manually.',
+  ].join('\n');
 }
 
 async function handleGuestpostCommand(target: string): Promise<string> {
@@ -646,19 +653,24 @@ async function handleAnswerCommand(
 
 // Patterns accept both "!command ..." and "@tork !command ..."
 const P = '(?:@tork\\s+)?';
-const PUBLISH_PLATFORM_PATTERN =
-  new RegExp(`^${P}!publish\\s+(devto|twitter|linkedin|hashnode)\\s+(\\d+)\\s*$`, 'i');
-const PUBLISH_ALL_PATTERN =
-  new RegExp(`^${P}!publish\\s+all\\s+(\\d+)\\s*$`, 'i');
-const COMMENT_PATTERN =
-  new RegExp(`^${P}!comment\\s+(\\S+)\\s+([\\s\\S]+)`, 'i');
-const GUESTPOST_PATTERN =
-  new RegExp(`^${P}!guestpost\\s+(\\w+)\\s*$`, 'i');
-const ANSWER_PATTERN =
-  new RegExp(`^${P}!answer\\s+(\\w+)\\s+([\\s\\S]+)`, 'i');
+const PUBLISH_PLATFORM_PATTERN = new RegExp(
+  `^${P}!publish\\s+(devto|twitter|linkedin|hashnode)\\s+(\\d+)\\s*$`,
+  'i',
+);
+const PUBLISH_ALL_PATTERN = new RegExp(
+  `^${P}!publish\\s+all\\s+(\\d+)\\s*$`,
+  'i',
+);
+const COMMENT_PATTERN = new RegExp(
+  `^${P}!comment\\s+(\\S+)\\s+([\\s\\S]+)`,
+  'i',
+);
+const GUESTPOST_PATTERN = new RegExp(`^${P}!guestpost\\s+(\\w+)\\s*$`, 'i');
+const ANSWER_PATTERN = new RegExp(`^${P}!answer\\s+(\\w+)\\s+([\\s\\S]+)`, 'i');
 
 // Broad detection: matches any message starting with !publish, !comment, !guestpost, or !answer
-const PUBLISH_CMD_DETECT = /^(?:@tork\s+)?!(publish|comment|guestpost|answer)\b/i;
+const PUBLISH_CMD_DETECT =
+  /^(?:@tork\s+)?!(publish|comment|guestpost|answer)\b/i;
 
 /** Check if a message is a publish/extra command */
 export function isPublishRequest(content: string): boolean {
@@ -666,9 +678,7 @@ export function isPublishRequest(content: string): boolean {
 }
 
 /** Handle a publish/extra command and return the response */
-export async function handlePublishCommand(
-  content: string,
-): Promise<string> {
+export async function handlePublishCommand(content: string): Promise<string> {
   const text = content.trim();
 
   // !publish <platform> <content_id>

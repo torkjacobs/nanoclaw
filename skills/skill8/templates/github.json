@@ -1,0 +1,26 @@
+{
+  "name": "GitHub",
+  "category": "tech",
+  "required_fields": [
+    "Repository Name",
+    "Description",
+    "Language",
+    "License",
+    "README"
+  ],
+  "optional_fields": [
+    "Topics",
+    "Homepage URL",
+    "Contributing Guidelines",
+    "Code of Conduct",
+    "Documentation"
+  ],
+  "char_limits": {
+    "Repository Name": 255,
+    "Description": 1000,
+    "README": 50000
+  },
+  "submission_url": "https://github.com/new",
+  "approval_time": "Immediate",
+  "cost": "free"
+}

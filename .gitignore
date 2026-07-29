@@ -33,3 +33,7 @@ groups/global/*
 .nanoclaw/
 
 agents-sdk-docs
+
+# secrets — never commit
+.env.local
+.env*.local

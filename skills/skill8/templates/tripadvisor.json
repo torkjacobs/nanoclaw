@@ -1,0 +1,26 @@
+{
+  "name": "TripAdvisor",
+  "category": "general",
+  "required_fields": [
+    "Business Name",
+    "Category",
+    "Address",
+    "Phone",
+    "Website"
+  ],
+  "optional_fields": [
+    "Business Description",
+    "Hours",
+    "Photos",
+    "Price Range",
+    "Amenities"
+  ],
+  "char_limits": {
+    "Business Name": 255,
+    "Business Description": 4000,
+    "Phone": 20
+  },
+  "submission_url": "https://www.tripadvisor.com",
+  "approval_time": "1-2 weeks",
+  "cost": "free"
+}

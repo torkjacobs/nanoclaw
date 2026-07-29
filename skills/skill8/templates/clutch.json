@@ -1,0 +1,27 @@
+{
+  "name": "Clutch",
+  "category": "saas",
+  "required_fields": [
+    "Company Name",
+    "Industry",
+    "Services",
+    "Company Size",
+    "Headquarters Location",
+    "Company Website"
+  ],
+  "optional_fields": [
+    "Company Description",
+    "Case Studies",
+    "Team Photos",
+    "Certifications",
+    "Awards"
+  ],
+  "char_limits": {
+    "Company Name": 255,
+    "Company Description": 2000,
+    "Services": 500
+  },
+  "submission_url": "https://clutch.co/register",
+  "approval_time": "1-2 weeks",
+  "cost": "free"
+}

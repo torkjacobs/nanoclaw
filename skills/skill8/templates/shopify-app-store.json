@@ -1,0 +1,26 @@
+{
+  "name": "Shopify App Store",
+  "category": "marketplace",
+  "required_fields": [
+    "App Name",
+    "Description",
+    "Category",
+    "Pricing Model",
+    "Privacy Policy URL"
+  ],
+  "optional_fields": [
+    "Support Email",
+    "Screenshots",
+    "Feature List",
+    "Video Demo",
+    "Documentation"
+  ],
+  "char_limits": {
+    "App Name": 255,
+    "Description": 4000,
+    "Category": 100
+  },
+  "submission_url": "https://www.shopify.com/app/submit",
+  "approval_time": "2-3 weeks",
+  "cost": "varies"
+}

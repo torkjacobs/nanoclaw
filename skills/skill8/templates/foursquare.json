@@ -1,0 +1,26 @@
+{
+  "name": "Foursquare",
+  "category": "general",
+  "required_fields": [
+    "Business Name",
+    "Category",
+    "Address",
+    "City",
+    "Zip Code"
+  ],
+  "optional_fields": [
+    "Phone",
+    "Website",
+    "Business Description",
+    "Hours",
+    "Photos"
+  ],
+  "char_limits": {
+    "Business Name": 255,
+    "Business Description": 1000,
+    "Phone": 20
+  },
+  "submission_url": "https://foursquare.com",
+  "approval_time": "3-7 days",
+  "cost": "free"
+}

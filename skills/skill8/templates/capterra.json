@@ -1,0 +1,27 @@
+{
+  "name": "Capterra",
+  "category": "saas",
+  "required_fields": [
+    "Product Name",
+    "Category",
+    "Description",
+    "Website",
+    "Company",
+    "Pricing"
+  ],
+  "optional_fields": [
+    "Logo",
+    "Screenshots",
+    "Features",
+    "Support Options",
+    "Free Trial Available"
+  ],
+  "char_limits": {
+    "Product Name": 255,
+    "Description": 4000,
+    "Category": 100
+  },
+  "submission_url": "https://www.capterra.com/submit-a-product",
+  "approval_time": "1-2 weeks",
+  "cost": "free"
+}

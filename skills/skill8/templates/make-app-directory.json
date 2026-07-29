@@ -1,0 +1,26 @@
+{
+  "name": "Make.com App Directory",
+  "category": "marketplace",
+  "required_fields": [
+    "App Name",
+    "Description",
+    "Categories",
+    "Logo",
+    "Documentation URL"
+  ],
+  "optional_fields": [
+    "Website",
+    "Support Email",
+    "Screenshots",
+    "API Documentation",
+    "Support Resources"
+  ],
+  "char_limits": {
+    "App Name": 255,
+    "Description": 2000,
+    "Categories": 200
+  },
+  "submission_url": "https://www.make.com/en/integrations",
+  "approval_time": "1-2 weeks",
+  "cost": "free"
+}

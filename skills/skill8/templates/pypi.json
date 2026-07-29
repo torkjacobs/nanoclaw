@@ -1,0 +1,26 @@
+{
+  "name": "PyPI",
+  "category": "tech",
+  "required_fields": [
+    "Package Name",
+    "Version",
+    "Author",
+    "Description",
+    "Repository URL"
+  ],
+  "optional_fields": [
+    "License",
+    "Keywords",
+    "Documentation",
+    "README",
+    "Homepage"
+  ],
+  "char_limits": {
+    "Package Name": 255,
+    "Description": 1000,
+    "Keywords": 200
+  },
+  "submission_url": "https://pypi.org",
+  "approval_time": "Immediate",
+  "cost": "free"
+}

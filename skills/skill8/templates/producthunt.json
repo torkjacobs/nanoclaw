@@ -1,0 +1,26 @@
+{
+  "name": "Product Hunt",
+  "category": "marketplace",
+  "required_fields": [
+    "Product Name",
+    "Tagline",
+    "Product Description",
+    "Category",
+    "Website"
+  ],
+  "optional_fields": [
+    "Product Gallery",
+    "Demo Video",
+    "Maker Profile",
+    "Pricing",
+    "Social Links"
+  ],
+  "char_limits": {
+    "Product Name": 60,
+    "Tagline": 60,
+    "Product Description": 300
+  },
+  "submission_url": "https://www.producthunt.com/launches/new",
+  "approval_time": "24 hours",
+  "cost": "free"
+}

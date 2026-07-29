@@ -189,7 +189,9 @@ async function callGovernApi(
       sanitizedInput: (data.output as string) || input,
       piiDetected: Array.isArray(piiField)
         ? piiField.map((p: unknown) =>
-            typeof p === 'string' ? p : (p as Record<string, unknown>)?.type as string || String(p),
+            typeof p === 'string'
+              ? p
+              : ((p as Record<string, unknown>)?.type as string) || String(p),
           )
         : [],
       receipt_id: (receipt?.receipt_id as string) || '',

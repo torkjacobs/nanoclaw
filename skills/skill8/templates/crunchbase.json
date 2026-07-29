@@ -1,0 +1,26 @@
+{
+  "name": "Crunchbase",
+  "category": "saas",
+  "required_fields": [
+    "Company Name",
+    "Industry",
+    "Headquarters",
+    "Website",
+    "Founding Date"
+  ],
+  "optional_fields": [
+    "Company Description",
+    "Funding Information",
+    "Team Members",
+    "Acquisitions",
+    "Social Links"
+  ],
+  "char_limits": {
+    "Company Name": 255,
+    "Company Description": 2000,
+    "Industry": 100
+  },
+  "submission_url": "https://www.crunchbase.com/organizations/new",
+  "approval_time": "1-2 weeks",
+  "cost": "free"
+}

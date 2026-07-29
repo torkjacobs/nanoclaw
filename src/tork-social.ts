@@ -10,7 +10,9 @@ import fs from 'fs';
 import path from 'path';
 
 import { TIMEZONE } from './config.js';
+import { readEnvFile } from './env.js';
 import { logger } from './logger.js';
+import { onSocialMention } from './tork-swarm.js';
 
 interface Mention {
   title: string;
@@ -32,6 +34,38 @@ const LOOKBACK_SECONDS = 12 * 60 * 60; // 12 hours for scheduled checks
 const RECENT_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 hours for on-demand
 
 const SOCIAL_PATTERN = /^@tork\s+(mentions|social)\s*$/i;
+
+/**
+ * Relevance keywords — a post must match at least ONE of these to trigger
+ * an alert. Generic terms like "AI", "agent", "security" alone are too broad.
+ */
+const RELEVANCE_KEYWORDS: RegExp[] = [
+  /\btork\b/i,
+  /\btork[\s.-]?network\b/i,
+  /\btork\.network\b/i,
+  /\b@torknetwork\b/i,
+  /\bai\s+governance\b/i,
+  /\bai\s+agent\s+governance\b/i,
+  /\bagent\s+governance\b/i,
+  /\bmcp\s+security\b/i,
+  /\bmcp\s+governance\b/i,
+  /\bpii\s+detection\b/i,
+  /\bpii\s+redaction\b/i,
+  /\bcompliance\s+receipts?\b/i,
+  /\btorking\b/i,
+  /\bopenclaw\s+security\b/i,
+  /\bclawhub\s+security\b/i,
+  /\blakera\b/i,
+  /\bmintmcp\b/i,
+  /\bguardrails\s+ai\b/i,
+  /\bprompt\s+armor\b/i,
+  /\brebuff\b/i,
+];
+
+function isRelevantMention(title: string, body?: string): boolean {
+  const text = body ? `${title} ${body}` : title;
+  return RELEVANCE_KEYWORDS.some((re) => re.test(text));
+}
 
 export function isSocialListenerRequest(content: string): boolean {
   return SOCIAL_PATTERN.test(content.trim());
@@ -96,6 +130,7 @@ interface HNHit {
   title?: string;
   url?: string;
   story_url?: string;
+  story_text?: string;
   objectID?: string;
   author?: string;
   created_at_i?: number;
@@ -108,6 +143,7 @@ interface HNResponse {
 interface RedditChild {
   data?: {
     title?: string;
+    selftext?: string;
     url?: string;
     permalink?: string;
     author?: string;
@@ -136,6 +172,8 @@ async function searchHackerNews(sinceUnix: number): Promise<Mention[]> {
       const id = hit.objectID || hit.url || hit.title;
       if (!id || seenIds.has(id)) continue;
       seenIds.add(id);
+
+      if (!isRelevantMention(hit.title || '', hit.story_text)) continue;
 
       const linkUrl =
         hit.url || `https://news.ycombinator.com/item?id=${hit.objectID}`;
@@ -167,6 +205,8 @@ async function searchReddit(sinceUnix: number): Promise<Mention[]> {
 
     const createdUtc = post.created_utc || 0;
     if (createdUtc < sinceUnix) continue;
+
+    if (!isRelevantMention(post.title || '', post.selftext)) continue;
 
     const postUrl = post.url || `https://reddit.com${post.permalink || ''}`;
 
@@ -238,6 +278,12 @@ export async function runSocialCheck(): Promise<string | null> {
   );
 
   if (newMentions.length === 0) return null;
+
+  // Swarm: auto-draft engagement for the first new mention
+  const first = newMentions[0];
+  onSocialMention(first.source, first.title, first.url).catch((err) =>
+    logger.error({ err }, 'Swarm onSocialMention failed'),
+  );
 
   const hnMentions = newMentions.filter((m) => m.source === 'HN');
   const redditMentions = newMentions.filter((m) => m.source === 'Reddit');
@@ -326,6 +372,213 @@ export async function getSocialStatus(): Promise<string> {
   return lines.join('\n');
 }
 
+// ══════════════════════════════════════════════════════════════
+//  INFLUENCER MONITORING
+// ══════════════════════════════════════════════════════════════
+
+const INFLUENCER_ACCOUNTS = [
+  // AI newsletters & media
+  'rowancheung', // The Rundown AI (2M+ subs)
+  'zaaborham', // Superhuman AI
+  'bensbites', // Ben's Bites
+  // AI/tech leaders
+  'emaborjmah', // Emad Mostaque
+  'sama', // Sam Altman
+  'AndrewYNg', // Andrew Ng
+  // Exponentialists & macro
+  'davidmattin', // David Mattin (New World Same Humans, exponential age)
+  'RasoulPal', // Raoul Pal (Real Vision, macro + AI convergence)
+  'PeterDiamandis', // Peter Diamandis (XPRIZE, abundance, exponential tech)
+  'AzizonomicsBA', // Azeem Azhar (Exponential View newsletter)
+  'SalimIsmail', // Salim Ismail (ExO Works — Zunaid connection)
+  // AI governance & safety
+  'ylecun', // Yann LeCun (Meta AI chief)
+  'GaryMarcus', // Gary Marcus (AI safety critic)
+];
+
+const INFLUENCER_KEYWORDS =
+  /\b(agent|governance|pii|compliance|security|autonomous|mcp|regulation|audit|trust|safety|responsible|ethical ai|ai risk|ai policy|exponential|disruption|singularity)\b/i;
+
+const INFLUENCER_SEEN_FILE = path.join(
+  process.cwd(),
+  'store',
+  'influencer-seen.json',
+);
+
+const NITTER_HOSTS = ['https://nitter.net', 'https://twiiit.com'];
+
+const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
+const HAIKU_MODEL = 'claude-haiku-4-5-20251001';
+
+interface InfluencerSeenStore {
+  seen: Record<string, number>; // tweet url -> unix timestamp
+}
+
+function loadInfluencerSeen(): InfluencerSeenStore {
+  try {
+    const data = fs.readFileSync(INFLUENCER_SEEN_FILE, 'utf-8');
+    return JSON.parse(data) as InfluencerSeenStore;
+  } catch {
+    return { seen: {} };
+  }
+}
+
+function saveInfluencerSeen(store: InfluencerSeenStore): void {
+  fs.mkdirSync(path.dirname(INFLUENCER_SEEN_FILE), { recursive: true });
+  fs.writeFileSync(INFLUENCER_SEEN_FILE, JSON.stringify(store, null, 2));
+}
+
+function pruneInfluencerSeen(store: InfluencerSeenStore): void {
+  const cutoff = Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60;
+  for (const [url, ts] of Object.entries(store.seen)) {
+    if (ts < cutoff) delete store.seen[url];
+  }
+}
+
+interface RssItem {
+  title: string;
+  link: string;
+  pubDate: number; // unix seconds
+}
+
+async function fetchInfluencerRss(handle: string): Promise<RssItem[]> {
+  for (const host of NITTER_HOSTS) {
+    try {
+      const url = `${host}/${handle}/rss`;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: { 'User-Agent': 'TorkBot/1.0' },
+      });
+      clearTimeout(timer);
+
+      if (!response.ok) continue;
+
+      const xml = await response.text();
+      return parseRssItems(xml);
+    } catch {
+      continue;
+    }
+  }
+  return [];
+}
+
+function parseRssItems(xml: string): RssItem[] {
+  const items: RssItem[] = [];
+  const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+  let match;
+
+  while ((match = itemRegex.exec(xml)) !== null) {
+    const block = match[1];
+
+    const titleMatch =
+      block.match(/<title><!\[CDATA\[([\s\S]*?)\]\]><\/title>/) ||
+      block.match(/<title>([\s\S]*?)<\/title>/);
+    const linkMatch = block.match(/<link>([\s\S]*?)<\/link>/);
+    const dateMatch = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
+
+    if (!titleMatch || !linkMatch) continue;
+
+    const title = titleMatch[1].replace(/<[^>]+>/g, '').trim();
+    const link = linkMatch[1].trim();
+    const pubDate = dateMatch
+      ? Math.floor(new Date(dateMatch[1].trim()).getTime() / 1000)
+      : Math.floor(Date.now() / 1000);
+
+    items.push({ title, link, pubDate });
+  }
+
+  return items;
+}
+
+async function generateReplyDraft(tweetText: string): Promise<string | null> {
+  const env = readEnvFile(['ANTHROPIC_API_KEY']);
+  const apiKey = env.ANTHROPIC_API_KEY;
+  if (!apiKey) return null;
+
+  try {
+    const response = await fetch(CLAUDE_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'x-api-key': apiKey,
+      },
+      body: JSON.stringify({
+        model: HAIKU_MODEL,
+        max_tokens: 256,
+        system:
+          'You are Yusuf Jacobs, CEO of Tork Network. Write a brief, genuine reply to this tweet. Add real value or insight about AI governance. Do NOT mention Tork or your product. Just be helpful and knowledgeable. Keep it under 200 characters. No hashtags.',
+        messages: [{ role: 'user', content: tweetText }],
+      }),
+    });
+
+    if (!response.ok) return null;
+
+    const data = (await response.json()) as {
+      content: Array<{ type: string; text?: string }>;
+    };
+    const textBlock = data.content.find((b) => b.type === 'text');
+    return textBlock?.text?.trim() ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function checkInfluencers(): Promise<string[]> {
+  const store = loadInfluencerSeen();
+  pruneInfluencerSeen(store);
+
+  const fourHoursAgo = Math.floor(Date.now() / 1000) - 4 * 60 * 60;
+  const alerts: string[] = [];
+
+  for (const handle of INFLUENCER_ACCOUNTS) {
+    try {
+      const items = await fetchInfluencerRss(handle);
+
+      for (const item of items) {
+        if (item.pubDate < fourHoursAgo) continue;
+        if (store.seen[item.link]) continue;
+        if (!INFLUENCER_KEYWORDS.test(item.title)) continue;
+
+        store.seen[item.link] = item.pubDate;
+
+        const replyDraft = await generateReplyDraft(item.title);
+
+        const lines = [
+          `\uD83C\uDFAF Influencer Alert \u2014 @${handle}`,
+          '',
+          item.title,
+          `\uD83D\uDD17 ${item.link}`,
+        ];
+
+        if (replyDraft) {
+          lines.push('', 'Suggested reply (edit before posting):', replyDraft);
+        }
+
+        alerts.push(lines.join('\n'));
+      }
+    } catch (err) {
+      logger.warn({ err, handle }, 'Failed to check influencer feed');
+    }
+  }
+
+  saveInfluencerSeen(store);
+
+  logger.info(
+    { alertCount: alerts.length, handles: INFLUENCER_ACCOUNTS },
+    'Influencer check completed',
+  );
+
+  return alerts;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  TIMER
+// ══════════════════════════════════════════════════════════════
+
 export function startSocialListenerTimer(
   sendMessage: (text: string) => Promise<void>,
 ): ReturnType<typeof setInterval> {
@@ -335,6 +588,16 @@ export function startSocialListenerTimer(
       if (result) await sendMessage(result);
     } catch (err) {
       logger.error({ err }, 'Tork social mention check failed');
+    }
+
+    // Influencer check on the same cycle
+    try {
+      const alerts = await checkInfluencers();
+      for (const alert of alerts) {
+        await sendMessage(alert);
+      }
+    } catch (err) {
+      logger.error({ err }, 'Influencer check failed');
     }
   };
 

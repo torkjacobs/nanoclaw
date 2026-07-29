@@ -1,0 +1,26 @@
+{
+  "name": "Facebook Business",
+  "category": "social",
+  "required_fields": [
+    "Business Name",
+    "Business Type",
+    "Address",
+    "Phone",
+    "Website"
+  ],
+  "optional_fields": [
+    "Business Description",
+    "Hours",
+    "Photos",
+    "Services",
+    "Payment Methods"
+  ],
+  "char_limits": {
+    "Business Name": 255,
+    "Business Description": 1000,
+    "Phone": 20
+  },
+  "submission_url": "https://www.facebook.com/business",
+  "approval_time": "1-2 days",
+  "cost": "free"
+}

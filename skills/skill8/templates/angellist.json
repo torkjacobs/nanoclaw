@@ -1,0 +1,26 @@
+{
+  "name": "AngelList",
+  "category": "saas",
+  "required_fields": [
+    "Company Name",
+    "Industry",
+    "Headquarters",
+    "Website",
+    "Founder Name"
+  ],
+  "optional_fields": [
+    "Company Description",
+    "Pitch",
+    "Funding Stage",
+    "Employee Count",
+    "Social Links"
+  ],
+  "char_limits": {
+    "Company Name": 255,
+    "Company Description": 1000,
+    "Pitch": 500
+  },
+  "submission_url": "https://www.angellist.com/startups/new",
+  "approval_time": "1-3 days",
+  "cost": "free"
+}

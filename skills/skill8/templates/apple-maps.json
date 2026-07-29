@@ -1,0 +1,26 @@
+{
+  "name": "Apple Maps",
+  "category": "general",
+  "required_fields": [
+    "Business Name",
+    "Category",
+    "Address",
+    "Phone",
+    "Website"
+  ],
+  "optional_fields": [
+    "Business Description",
+    "Hours",
+    "Photos",
+    "Parking Info",
+    "Website URL"
+  ],
+  "char_limits": {
+    "Business Name": 255,
+    "Business Description": 4000,
+    "Phone": 20
+  },
+  "submission_url": "https://www.apple.com/maps",
+  "approval_time": "2-7 days",
+  "cost": "free"
+}
