@@ -52,7 +52,7 @@ export interface ContentRow {
 const DB_PATH = path.join(STORE_DIR, 'marketing-content.db');
 const API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL_DRAFT = 'claude-haiku-4-5-20251001';
-const MODEL_REWRITE = 'claude-sonnet-4-6-20250514';
+const MODEL_REWRITE = 'claude-sonnet-4-6';
 const MAX_TOKENS = 4096;
 
 // ══════════════════════════════════════════════════════════════
