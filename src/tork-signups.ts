@@ -176,7 +176,7 @@ async function fetchRecentBookDownloads(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-  const url = `${baseUrl}/rest/v1/book_downloads?select=id,email,created_at&order=created_at.desc&limit=5`;
+  const url = `${baseUrl}/rest/v1/book_downloads?select=id,email:user_email,created_at:downloaded_at&order=downloaded_at.desc&limit=5`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {

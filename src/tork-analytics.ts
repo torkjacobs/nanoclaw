@@ -151,7 +151,7 @@ async function fetchAllMetrics(): Promise<Metrics> {
     queryCount(url, key, 'api_keys'),
     queryCount(url, key, 'api_keys', `last_used_at=gte.${weekStart}`),
     queryCount(url, key, 'book_downloads'),
-    queryCount(url, key, 'book_downloads', `created_at=gte.${today}`),
+    queryCount(url, key, 'book_downloads', `downloaded_at=gte.${today}`),
   ]);
 
   return {
