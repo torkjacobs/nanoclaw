@@ -13,6 +13,7 @@ import path from 'path';
 
 import { STORE_DIR } from '../../config.js';
 import { readEnvFile } from '../../env.js';
+import { spendGuardedFetch } from '../../anthropic-spend.js';
 import { logger } from '../../logger.js';
 
 // ══════════════════════════════════════════════════════════════
@@ -196,7 +197,7 @@ async function callClaude(
   const timer = setTimeout(() => controller.abort(), 60_000);
 
   try {
-    const response = await fetch(API_URL, {
+    const response = await spendGuardedFetch('marketing-content', API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

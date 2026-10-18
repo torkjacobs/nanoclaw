@@ -7,6 +7,7 @@
  * Separate conversation history from the content drafter.
  */
 import { readEnvFile } from './env.js';
+import { spendGuardedFetch } from './anthropic-spend.js';
 import { logger } from './logger.js';
 
 const SYSTEM_PROMPT = `You are drafting a sales response on behalf of Tork Network, an AI governance platform. Tork provides: policy enforcement, PII detection/redaction (1ms processing, 12 regional variants), compliance receipts across 79+ frameworks, 11 SDKs, and enterprise features. Pricing: Free (5K calls), Starter $29/yr, Pro $99/yr, Business $399/yr, Enterprise from $2,500/mo. Founded by Yusuf Jacobs. Website: tork.network. Demo: demo.tork.network.
@@ -57,7 +58,7 @@ async function callClaudeAPI(
     throw new Error('No ANTHROPIC_API_KEY found in .env');
   }
 
-  const response = await fetch(API_URL, {
+  const response = await spendGuardedFetch('leads', API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

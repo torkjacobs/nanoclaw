@@ -12,6 +12,7 @@
 import crypto from 'crypto';
 
 import { readEnvFile } from '../../env.js';
+import { spendGuardedFetch } from '../../anthropic-spend.js';
 import { logger } from '../../logger.js';
 
 import {
@@ -549,7 +550,7 @@ async function callClaudeForExtra(
   if (!apiKey) return 'ANTHROPIC_API_KEY not set — cannot generate content.';
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await spendGuardedFetch('marketing-publish', 'https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
