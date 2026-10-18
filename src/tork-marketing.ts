@@ -13,7 +13,6 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-
 import { STORE_DIR } from './config.js';
 import { verifyContent, formatVerificationResult } from './tork-claims.js';
 import { readEnvFile } from './env.js';
