@@ -6,6 +6,7 @@
  * Stores the last draft per group for iterative refinement.
  */
 import { readEnvFile } from './env.js';
+import { spendGuardedFetch } from './anthropic-spend.js';
 import { logger } from './logger.js';
 
 const SYSTEM_PROMPT = `You are a content writer for Tork Network, an AI governance platform. Tork provides policy enforcement, PII detection/redaction, compliance receipts, and governance controls across 79+ frameworks. The tone should be professional but approachable, technically credible, and focused on real value — not hype. The founder is Yusuf Jacobs. Twitter: @torknetwork1. Website: tork.network. Never use emojis in LinkedIn posts. Keep tweets under 280 characters. Always end LinkedIn posts with a subtle CTA to tork.network.`;
@@ -69,7 +70,7 @@ async function callClaudeAPI(
     'x-api-key': apiKey,
   };
 
-  const response = await fetch(API_URL, {
+  const response = await spendGuardedFetch('drafter', API_URL, {
     method: 'POST',
     headers,
     body: JSON.stringify({

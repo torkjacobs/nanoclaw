@@ -13,10 +13,10 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-
 import { STORE_DIR } from './config.js';
 import { verifyContent, formatVerificationResult } from './tork-claims.js';
 import { readEnvFile } from './env.js';
+import { spendGuardedFetch } from './anthropic-spend.js';
 import { logger } from './logger.js';
 import {
   onArticlePublished,
@@ -764,7 +764,7 @@ async function callClaudeAPI(
   const apiKey = getAnthropicKey();
   if (!apiKey) throw new Error('No ANTHROPIC_API_KEY found in .env');
 
-  const response = await fetch(API_URL, {
+  const response = await spendGuardedFetch('marketing', API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
