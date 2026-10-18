@@ -550,20 +550,24 @@ async function callClaudeForExtra(
   if (!apiKey) return 'ANTHROPIC_API_KEY not set — cannot generate content.';
 
   try {
-    const response = await spendGuardedFetch('marketing-publish', 'https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'anthropic-version': '2023-06-01',
-        'x-api-key': apiKey,
+    const response = await spendGuardedFetch(
+      'marketing-publish',
+      'https://api.anthropic.com/v1/messages',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+          'x-api-key': apiKey,
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 2048,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userMessage }],
+        }),
       },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 2048,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMessage }],
-      }),
-    });
+    );
 
     if (!response.ok) {
       const body = await response.text();

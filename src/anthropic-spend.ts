@@ -50,14 +50,22 @@ function storeOptions(opts: SpendGuardOptions): AiSpendOptions {
   return { ...rest, product: PRODUCT };
 }
 
-function describeBody(init: RequestInit): { model: string | undefined; maxTokens: number | null; tokensIn: number } {
+function describeBody(init: RequestInit): {
+  model: string | undefined;
+  maxTokens: number | null;
+  tokensIn: number;
+} {
   const raw = typeof init.body === 'string' ? init.body : '';
   let model: string | undefined;
   let maxTokens: number | null = null;
   try {
     const parsed = JSON.parse(raw) as { model?: unknown; max_tokens?: unknown };
     if (typeof parsed.model === 'string') model = parsed.model;
-    if (typeof parsed.max_tokens === 'number' && Number.isFinite(parsed.max_tokens)) maxTokens = parsed.max_tokens;
+    if (
+      typeof parsed.max_tokens === 'number' &&
+      Number.isFinite(parsed.max_tokens)
+    )
+      maxTokens = parsed.max_tokens;
   } catch {
     /* unparseable body: priced as an unknown model with whatever is known */
   }
@@ -66,7 +74,11 @@ function describeBody(init: RequestInit): { model: string | undefined; maxTokens
 
 function logLine(o: AiSpendOptions, payload: Record<string, unknown>): void {
   try {
-    const line = JSON.stringify({ ...payload, product: PRODUCT, ts: new Date(o.now ?? Date.now()).toISOString() });
+    const line = JSON.stringify({
+      ...payload,
+      product: PRODUCT,
+      ts: new Date(o.now ?? Date.now()).toISOString(),
+    });
     if (o.log) o.log(line, 'info');
     else console.info(line);
   } catch {
@@ -74,14 +86,19 @@ function logLine(o: AiSpendOptions, payload: Record<string, unknown>): void {
   }
 }
 
-async function usageOf(response: Response): Promise<{ input: number | null; output: number | null }> {
+async function usageOf(
+  response: Response,
+): Promise<{ input: number | null; output: number | null }> {
   try {
-    const data = (await response.clone().json()) as { usage?: { input_tokens?: unknown; output_tokens?: unknown } };
+    const data = (await response.clone().json()) as {
+      usage?: { input_tokens?: unknown; output_tokens?: unknown };
+    };
     const input = data?.usage?.input_tokens;
     const output = data?.usage?.output_tokens;
     return {
       input: typeof input === 'number' && Number.isFinite(input) ? input : null,
-      output: typeof output === 'number' && Number.isFinite(output) ? output : null,
+      output:
+        typeof output === 'number' && Number.isFinite(output) ? output : null,
     };
   } catch {
     return { input: null, output: null };
@@ -115,7 +132,10 @@ export async function spendGuardedFetch(
 
   const decision = await checkSpend(TENANT, estUsd, o);
   if (!decision.allowed) {
-    throw new SpendCapError(decision.status === 429 ? 429 : 503, decision.reason);
+    throw new SpendCapError(
+      decision.status === 429 ? 429 : 503,
+      decision.reason,
+    );
   }
 
   logLine(o, { event: 'ai_spend_call', feature, model: model ?? null });
