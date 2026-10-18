@@ -1,0 +1,12 @@
+{
+  "limit": 800,
+  "exclude": [],
+  "allow": {
+    ".claude/skills/add-slack/add/src/channels/slack.test.ts": 848,
+    ".claude/skills/add-telegram/add/src/channels/telegram.test.ts": 926,
+    ".claude/skills/add-voice-transcription/modify/src/channels/whatsapp.test.ts": 963,
+    "src/channels/whatsapp.test.ts": 949,
+    "src/index.ts": 806,
+    "src/tork-marketing.ts": 2227
+  }
+}
